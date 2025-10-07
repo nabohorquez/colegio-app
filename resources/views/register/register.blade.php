@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Iniciar Sesión - AcademicSoftware')
+@section('title', 'Registro - AcademicSoftware')
 
 @section('content')
     <div class="login-container d-flex align-items-center justify-content-center">
