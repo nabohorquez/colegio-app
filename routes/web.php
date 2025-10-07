@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CreateUser;
 
 // Ruta raíz redirige al login
 Route::get('/', function () {
@@ -17,3 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
 });
+
+// Rutas para crear usuarios (ejemplo, no implementado en el controlador)
+Route::get('/register', [CreateUser::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [CreateUser::class, 'register']);
