@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Role extends Model
+class Page extends Model
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'roles';
+    protected $table = 'pages';
 
      /**
      * The attributes that are mass assignable.
@@ -18,8 +18,9 @@ class Role extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'rol_name',
+        'page_name',
         'description',
+        'route',
     ];
 
     /**
@@ -29,25 +30,37 @@ class Role extends Model
      */
     protected $hidden = [
         'id',
+        'id_page_type',
+        'id_father_page',
     ];
 
     /**
-     * Get the roles by user for the Role
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function rolesByUsers()
-    {
-        return $this->hasMany(RoleByUser::class, 'id_role', 'id');
-    }
-
-    /**
-     * Get the roles by pages for the Role
+     * Get the roles by pages for the Page
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function rolesByPages()
     {
-        return $this->hasMany(RoleByUser::class, 'id_page', 'id');
+        return $this->hasMany(RoleByPage::class, 'id_page', 'id');
+    }
+
+    /**
+     * Get the father pages
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function fatherPage()
+    {
+        return $this->belongsTo(Page::class, 'id_father_page', 'id');
+    }
+
+    /**
+     * Get the page type for Page
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pageType()
+    {
+        return $this->belongsTo(PageType::class, 'id_page_type', 'id');
     }
 }

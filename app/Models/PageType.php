@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class Role extends Model
+class PageType extends Model
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'roles';
+    protected $table = 'page_types';
 
      /**
      * The attributes that are mass assignable.
@@ -18,7 +18,7 @@ class Role extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'rol_name',
+        'type_name',
         'description',
     ];
 
@@ -36,18 +36,8 @@ class Role extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function rolesByUsers()
+    public function pages()
     {
-        return $this->hasMany(RoleByUser::class, 'id_role', 'id');
-    }
-
-    /**
-     * Get the roles by pages for the Role
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function rolesByPages()
-    {
-        return $this->hasMany(RoleByUser::class, 'id_page', 'id');
+        return $this->hasMany(RoleByPage::class, 'id_page', 'id');
     }
 }
