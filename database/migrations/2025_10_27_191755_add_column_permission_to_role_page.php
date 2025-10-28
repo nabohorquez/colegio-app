@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('roles_by_pages', function (Blueprint $table) {
-            $table->integer('id_permission')->references('id')->on('permission');
-            $table->foreign('id_permission')->references('id')->on('permission');
+            $table->integer('id_permission')->references('id')->on('permissions');
+            $table->foreign('id_permission')->references('id')->on('permissions');
         });
     }
 
