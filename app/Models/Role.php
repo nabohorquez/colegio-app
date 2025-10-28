@@ -40,4 +40,14 @@ class Role extends Model
     {
         return $this->hasMany(RoleByUser::class, 'id_role', 'id');
     }
+
+    /**
+     * Get the pages by role
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pagesByRole()
+    {
+        return $this->hasMany(RoleByPage::class, 'id_role', 'id');
+    }
 }

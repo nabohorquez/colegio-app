@@ -9,6 +9,10 @@ class RoleByUser extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+    public $incrementing = false;
+    protected $primaryKey = null;
+
     protected $table = 'roles_by_users';
 
     /**
