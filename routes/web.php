@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreateUser;
 use App\Http\Controllers\Role;
+use App\Http\Controllers\Pages;
 
 // Ruta raíz redirige al login
 Route::get('/', function () {
@@ -24,4 +25,5 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/register', [CreateUser::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [CreateUser::class, 'register']);
 
-Route::get('/roles', [Role::class, 'getAll'])->name('roles');
+Route::get('/roles', [Role::class, 'getAll'])->name('roles.index');
+Route::get('/users', [Role::class, 'getAll'])->name('users.index');

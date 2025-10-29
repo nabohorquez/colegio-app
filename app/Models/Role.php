@@ -50,4 +50,14 @@ class Role extends Model
     {
         return $this->hasMany(RoleByPage::class, 'id_role', 'id');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'roles_by_users', 'id_role', 'id_user');
+    }
+
+    public function pages()
+    {
+        return $this->belongsToMany(Page::class, 'roles_by_pages', 'id_role', 'id_page');
+    }
 }

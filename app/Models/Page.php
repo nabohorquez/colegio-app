@@ -42,8 +42,12 @@ class Page extends Model
      */
     public function roleByPage()
     {
-    // foreign key on roles_by_pages is id_page, local key is id
-    return $this->hasMany(RoleByPage::class, 'id_page', 'id');
+        return $this->hasMany(RoleByPage::class, 'id_page', 'id');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'roles_by_pages', 'id_page', 'id_role');
     }
 
     /**

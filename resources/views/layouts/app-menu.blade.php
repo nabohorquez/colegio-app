@@ -56,12 +56,43 @@
                         <h6 class="text-white-50 text-uppercase">Menú Principal</h6>
                     </div>
                     <nav class="nav flex-column px-3" aria-label="dashboard">
-                        <a class="nav-link active" href="{{ route('dashboard') }}">
-                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-                        </a>
-                        <a class="nav-link" href="{{ route('roles') }}">
-                            <i class="fas fa-file-invoice me-2"></i>Roles
-                        </a>
+                        @foreach($modules as $module)
+                            @if(empty($module->sub_pages))
+                                <a
+                                    class="nav-link {{ Route::currentRouteName() == $module->route ? 'active' : '' }}"
+                                    href="{{ route($module->route) }}"
+                                >
+                                    <i class="fas fa-file-alt me-2"></i>{{ $module->page_name }}
+                                </a>
+                            @else
+                                <a class="nav-link" href="#module-{{ $module->id }}" data-bs-toggle="collapse" aria-expanded="false">
+                                    <i class="fas fa-folder me-2"></i>{{ $module->page_name }}
+                                </a>
+                                <div class="collapse ps-3" id="module-{{ $module->id }}">
+                                    @foreach($module->sub_pages as $sub_page)
+                                        @if(empty($sub_page->components))
+                                            <a class="nav-link {{ Route::currentRouteName() == $sub_page->route ? 'active' : '' }}" href="{{ route($sub_page->route) }}">
+                                                <i class="fas fa-file-alt me-2"></i>{{ $sub_page->page_name }}
+                                            </a>
+                                        @else
+                                            <a class="nav-link" href="#subpage-{{ $sub_page->id }}" data-bs-toggle="collapse" aria-expanded="false">
+                                                <i class="fas fa-file-alt me-2"></i>{{ $sub_page->page_name }}
+                                            </a>
+                                            <div class="collapse ps-3" id="subpage-{{ $sub_page->id }}">
+                                                @foreach($sub_page->components as $component)
+                                                    <a
+                                                        class="nav-link {{ Route::currentRouteName() == $component->route ? 'active' : '' }}"
+                                                        href="{{ route($component->route) }}"
+                                                    >
+                                                        <i class="fas fa-cube me-2"></i>{{ $component->page_name }}
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
+                        @endforeach
                     </nav>
                 </div>
             </div>
