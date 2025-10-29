@@ -22,6 +22,8 @@ class Page extends Model
         'page_name',
         'description',
         'route',
+        'id_page_type',
+        'id_father_page',
     ];
 
     /**
@@ -31,8 +33,6 @@ class Page extends Model
      */
     protected $hidden = [
         'id',
-        'id_page_type',
-        'id_father_page',
     ];
 
     /**

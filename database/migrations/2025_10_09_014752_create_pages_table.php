@@ -19,7 +19,7 @@ class CreatePagesTable extends Migration
             $table->integer('id_father_page')->references('id')->on('pages')->nullable();
             $table->string('page_name', 50);
             $table->string('description', 100)->nullable();
-            $table->string('route', 20)->unique();
+            $table->string('route', 20)->unique()->nullable();
             $table->timestamps();
             $table->foreign('id_page_type')->references('id')->on('page_types');
             $table->foreign('id_father_page')->references('id')->on('pages');

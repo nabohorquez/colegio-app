@@ -18,14 +18,16 @@ class ModuleController extends Controller
     }
 
     public function viewCreate() {
-        return view('modules.form');
+        return view('modules.form', [
+            "module" => []
+        ]);
     }
 
     public function getById($id)
     {
         $module = $this->getModuleById($id);
         return view('modules.form', [
-            $module
+            "module" => $module
         ]);
     }
 
@@ -34,21 +36,33 @@ class ModuleController extends Controller
         $request->validate([
             'module_name' => 'required|string|max:50',
             'description' => 'nullable|string|max:50',
-            'route' => 'sometimes|string|max:20',
+            'route' => 'nullable|string|max:20',
         ]);
 
         if ($this->validateModuleData($request->module_name)) {
             return response()->json(['message' => 'El modulo ya existe'], 400);
         }
 
-        $module = Page::create([
+        $data = [
             'page_name' => $request->module_name,
             'description' => $request->description,
-            'route' => $request->route
-        ]);
+            'id_page_type' => 1,
+        ];
+
+        if ($request->filled('route')) {
+            $existingRoute = Page::where('route', $request->route)->first();
+            if ($existingRoute) {
+                return redirect()->route('modules.index')
+                    ->with('error', 'La ruta ya existe.');
+            }
+
+            $data['route'] = $request->route;
+        }
+
+        $module = Page::create($data);
 
         return redirect()->route('modules.index', $module->id)
-            ->with('success', 'Modulo actualizado correctamente.');
+            ->with('success', 'Modulo creado.');
     }
 
     public function update(Request $request, $id)
@@ -58,17 +72,28 @@ class ModuleController extends Controller
         $request->validate([
             'module_name' => 'sometimes|required|string|max:50',
             'description' => 'nullable|string|max:50',
-            'route' => 'sometimes|string|max:20'
+            'route' => 'nullable|string|max:20'
         ]);
 
-        if ($this->validateModuleData($request->rol_name, $id)) {
-            return response()->json(['message' => 'El modulo ya existe'], 400);
+
+        if ($this->validateModuleData($request->module_name, $id)) {
+            return redirect()->route('modules.index', $module->id)
+                ->with('error', 'El modulo ya existe.');
         }
 
-        $module->update($request->only(['page_name', 'description', 'route']));
+        $data = [
+            'page_name' => $request->module_name,
+            'description' => $request->description,
+        ];
+
+        if ($request->filled('route')) {
+            $data['route'] = $request->route;
+        }
+
+        $module->update($data);
 
         return redirect()->route('modules.index', $module->id)
-            ->with('success', 'Modulo actualizado correctamente.');
+            ->with('success', 'Modulo actualizado.');
     }
 
     public function delete($id)
@@ -77,13 +102,15 @@ class ModuleController extends Controller
 
         $module->delete();
         return redirect()->route('modules.index')
-            ->with('success', 'Modulo eliminado correctamente.');
+            ->with('success', 'Modulo eliminado.');
     }
 
     private function validateModuleData(string $moduleName, ?int $id = null): bool
     {
-        $moduleModel = new Page();
-        $moduleModel->where('page_name', $moduleName);
+        $moduleModel = Page::where([
+            'page_name' => $moduleName,
+            'id_page_type' => 1
+        ]);
         if ($id) {
             $moduleModel->where('id', '!=', $id);
         }

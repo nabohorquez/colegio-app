@@ -6,10 +6,14 @@
     <div class="container mt-5">
         <h2 class="mb-4">Lista de Módulos</h2>
         @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+            </div>
         @endif
         @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+            </div>
         @endif
         <table class="table table-bordered" id="modulesTable" style="max-width: 5000px;">
             <thead>
@@ -28,22 +32,17 @@
                         @if(in_array('edit', $permissions) || in_array('delete', $permissions))
                             <td class="d-flex justify-content-center">
                                 @if(in_array('edit', $permissions))
-                                    <button
-                                        class="btn btn-sm btn-warning me-2"
-                                        title="Editar"
-                                        data-id="{{ $module->id }}"
-                                    >
-                                        <a href="{{ route('modules.getById', $module->id) }}"><i class="fas fa-edit"></i></a>
-                                    </button>
+                                    <a href="{{ route('modules.getById', $module->id) }}" class="btn btn-sm btn-warning me-2" title="Editar"><i class="fas fa-edit"></i></a>
                                 @endif
                                 @if(in_array('delete', $permissions))
-                                    <button
-                                        class="btn btn-sm btn-danger"
-                                        title="Eliminar"
-                                        data-id="{{ $module->id }}"
-                                    >
-                                        <a href="{{ route('modules.delete', $module->id) }}"><i class="fas fa-trash-alt"></i></a>
-                                    </button>
+                                    <form action="{{ route('modules.delete', $module->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Eliminar"
+                                                onclick="return confirm('¿Estás seguro de que deseas eliminar este módulo?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
                                 @endif
                             </td>
                         @endif
