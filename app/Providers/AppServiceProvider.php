@@ -5,8 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Controllers\Pages;
-use App\Models\Page;
+use App\Http\Controllers\PageController;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
             $cacheKey = 'menu_modules_' . ($userId ?? 'guest');
 
             $modules = Cache::remember($cacheKey, 60, function () use ($userId) {
-                $pagesController = new Pages();
+                $pagesController = new PageController();
                 $result = $pagesController->getPagesToMenu($userId);
                 return $result ?? [];
             });

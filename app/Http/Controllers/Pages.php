@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use App\Models\User;
 
-class Pages extends Controller
+class PageController extends Controller
 {
     public function getPagesToMenu($userId = null)
     {
