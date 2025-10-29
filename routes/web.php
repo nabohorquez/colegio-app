@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreateUser;
-use App\Http\Controllers\Role;
-use App\Http\Controllers\Pages;
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\RoleController;
 
 // Ruta raíz redirige al login
 Route::get('/', function () {
@@ -16,14 +16,22 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Rutas protegidas por autenticación
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
-});
-
 // Rutas para crear usuarios (ejemplo, no implementado en el controlador)
 Route::get('/register', [CreateUser::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [CreateUser::class, 'register']);
 
-Route::get('/roles', [Role::class, 'getAll'])->name('roles.index');
-Route::get('/users', [Role::class, 'getAll'])->name('users.index');
+// Rutas protegidas por autenticación
+Route::middleware(['auth', 'check.page.permissions'])->group(function () {
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+    Route::get('/roles', [RoleController::class, 'getAll'])->name('roles.index');
+    Route::get('/users', [RoleController::class, 'getAll'])->name('users.index');
+
+    Route::prefix('modules')->name('modules.')->group(function () {
+        Route::get('/', [ModuleController::class, 'getAll'])->name('index');
+        Route::get('/create', [ModuleController::class, 'viewCreate'])->name('viewCreate');
+        Route::post('/', [ModuleController::class, 'create'])->name('create');
+        Route::get('/{id}', [ModuleController::class, 'getById'])->name('getById');
+        Route::put('/{id}', [ModuleController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ModuleController::class, 'delete'])->name('delete');
+    });
+});

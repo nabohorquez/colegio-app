@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use Illuminate\Http\Request;
 use App\Models\Role as ModelRole;
+use App\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Str;
 
-class Role extends Controller
+class RoleController extends Controller
 {
     public function getAll()
     {
-        return view('components.role', ['roles' => ModelRole::all()]);
+        return view('roles.index', ['roles' => ModelRole::all()]);
     }
 
     public function getById($id)
@@ -84,5 +87,41 @@ class Role extends Controller
         } else {
             throw new NotFoundHttpException('El rol no se encuentra');
         }
+    }
+
+    /**
+     * Obtener permisos por pagina
+     * @param int $userId User iD
+     * @param string $pageRoute Page route
+     */
+    public function getPermissionsPageByRoleId(int $userId, string $pageRoute)
+    {
+        $user = User::find($userId);
+        $roleIds = $user ? $user->roles->pluck('id')->toArray() : [];
+
+        if (empty($roleIds)) {
+            return [];
+        }
+
+        $allowedPages = Page::where('route', 'like', $pageRoute . '%')
+            ->whereHas('roles', function ($q) use ($roleIds) {
+                $q->whereIn('roles.id', $roleIds);
+            })
+            ->get()
+            ->filter(fn($page) =>
+                (strpos($page->route, '.') ? Str::before($page->route, '.') : $page->route) === $pageRoute
+            );
+
+        if ($allowedPages->isEmpty()) {
+            return [];
+        }
+
+        $permissions = $allowedPages->map(function ($allowedPage) {
+            return $allowedPage->roleByPage->map(function ($rp) {
+                return optional($rp->permissionByPage)->permission;
+            });
+        })->first();
+
+        return $permissions ? $permissions->filter()->values()->toArray() : [];
     }
 }

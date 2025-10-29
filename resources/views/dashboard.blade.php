@@ -11,6 +11,14 @@
                 <p class="text-muted">Gestiona tus cuentas de cobro de manera eficiente</p>
             </div>
         </div>
+        <div class="row mb-4">
+            @if(session('success'))
+                <div class="col-12 alert alert-success">{{ session('success') }}</div>
+            @endif
+            @if(session('error'))
+                <div class="col-12 alert alert-danger">{{ session('error') }}</div>
+            @endif
+        </div>
 
         <!-- Statistics Cards -->
         <div class="row mb-4">
