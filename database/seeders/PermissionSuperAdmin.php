@@ -15,7 +15,6 @@ class PermissionSuperAdmin extends Seeder
         $firstUser = \App\Models\User::first();
 
         if ($superAdminRole && $firstUser) {
-            // ensure role-user pivot exists
             \App\Models\RoleByUser::firstOrCreate(
                 ['id_role' => $superAdminRole->id, 'id_user' => $firstUser->id]
             );
@@ -24,7 +23,6 @@ class PermissionSuperAdmin extends Seeder
             $permissions = \App\Models\Permission::all();
             foreach ($pages as $page) {
                 foreach ($permissions as $permission) {
-                    // use firstOrCreate to avoid duplicate inserts if seeder runs twice
                     \App\Models\RoleByPage::firstOrCreate([
                         'id_role' => $superAdminRole->id,
                         'id_page' => $page->id,

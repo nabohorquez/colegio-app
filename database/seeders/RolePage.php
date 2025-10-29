@@ -51,7 +51,7 @@ class RolePage extends Seeder
                 [
                     'page_name' => 'Gestión de Roles',
                     'route' => 'roles.index',
-                    'id_page_type' => 1,
+                    'id_page_type' => 2,
                     'description' => 'Página para la gestión de permisos',
                     'id_father_page' => $fatherPage->id,
                 ],
