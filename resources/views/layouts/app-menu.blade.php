@@ -64,7 +64,7 @@
                             @foreach($modules as $module)
                                 @if(empty($module->sub_pages))
                                     <a
-                                        class="nav-link {{ Route::currentRouteName() == $module->route ? 'active' : '' }}"
+                                        class="nav-link {{ Str::before(Route::currentRouteName(), '.') == Str::before($module->route, '.') ? 'active' : '' }}"
                                         href="{{ route($module->route) }}"
                                     >
                                         <i class="fas fa-file-alt me-2"></i>{{ $module->page_name }}
@@ -76,7 +76,7 @@
                                     <div class="collapse ps-3" id="module-{{ $module->id }}">
                                         @foreach($module->sub_pages as $sub_page)
                                             @if(empty($sub_page->components))
-                                                <a class="nav-link {{ Route::currentRouteName() == $sub_page->route ? 'active' : '' }}" href="{{ route($sub_page->route) }}">
+                                                <a class="nav-link {{ Str::before(Route::currentRouteName(), '.') == Str::before($sub_page->route, '.') ? 'active' : '' }}" href="{{ route($sub_page->route) }}">
                                                     <i class="fas fa-file-alt me-2"></i>{{ $sub_page->page_name }}
                                                 </a>
                                             @else
@@ -86,7 +86,7 @@
                                                 <div class="collapse ps-3" id="subpage-{{ $sub_page->id }}">
                                                     @foreach($sub_page->components as $component)
                                                         <a
-                                                            class="nav-link {{ Route::currentRouteName() == $component->route ? 'active' : '' }}"
+                                                            class="nav-link {{ Str::before(Route::currentRouteName(), '.') == Str::before($component->route, '.') ? 'active' : '' }}"
                                                             href="{{ route($component->route) }}"
                                                         >
                                                             <i class="fas fa-cube me-2"></i>{{ $component->page_name }}
