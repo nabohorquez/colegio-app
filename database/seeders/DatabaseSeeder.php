@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RolePage::class);
         $this->call(PermissionSuperAdmin::class);
         $this->call(ModulePage::class);
+        $this->call(PagePage::class);
     }
 }

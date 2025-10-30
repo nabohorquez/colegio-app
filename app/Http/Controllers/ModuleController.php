@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Page;
 use Illuminate\Http\Request;
-use App\Models\Role as ModelRole;
-use App\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ModuleController extends Controller
@@ -40,7 +38,8 @@ class ModuleController extends Controller
         ]);
 
         if ($this->validateModuleData($request->module_name)) {
-            return response()->json(['message' => 'El modulo ya existe'], 400);
+            return redirect()->route('modules.index')
+                    ->with('error', 'El modulo ya existe.');
         }
 
         $data = [
