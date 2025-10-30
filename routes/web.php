@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreateUser;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\RoleController;
 
 // Ruta raíz redirige al login
@@ -33,5 +34,14 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::get('/{id}', [ModuleController::class, 'getById'])->name('getById');
         Route::put('/{id}', [ModuleController::class, 'update'])->name('update');
         Route::delete('/{id}', [ModuleController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('pages')->name('pages.')->group(function () {
+        Route::get('/', [PageController::class, 'getAll'])->name('index');
+        Route::get('/create', [PageController::class, 'viewCreate'])->name('viewCreate');
+        Route::post('/', [PageController::class, 'create'])->name('create');
+        Route::get('/{id}', [PageController::class, 'getById'])->name('getById');
+        Route::put('/{id}', [PageController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PageController::class, 'delete'])->name('delete');
     });
 });
