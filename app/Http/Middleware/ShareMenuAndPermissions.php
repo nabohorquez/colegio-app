@@ -27,8 +27,15 @@ class ShareMenuAndPermissions
             $modules = collect($modules);
 
             $routeName = Route::currentRouteName();
-            $moduleName = Str::before($routeName, '.') ?? $routeName;
-            $permissions = (new RoleController())->getPermissionsPageByRoleId($userId, $moduleName);
+
+            // Si no hay nombre de ruta (por ejemplo: 404 u otras rutas sin nombre),
+            // no intentamos resolver permisos y devolvemos un array vacío.
+            if (!$routeName) {
+                $permissions = [];
+            } else {
+                $moduleName = Str::before($routeName, '.') ?? $routeName;
+                $permissions = (new RoleController())->getPermissionsPageByRoleId($userId, $moduleName);
+            }
 
             View::share('modules', $modules);
             View::share('permissions', $permissions);

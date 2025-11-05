@@ -6,6 +6,7 @@ use App\Http\Controllers\CreateUser;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TopicsController;
 
 // Ruta raíz redirige al login
 Route::get('/', function () {
@@ -44,4 +45,11 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::put('/{id}', [PageController::class, 'update'])->name('update');
         Route::delete('/{id}', [PageController::class, 'delete'])->name('delete');
     });
+
+    Route::get('/topics', [TopicsController::class, 'mostrar']);
 });
+
+// Ruta de topics accesible para usuarios autenticados (sin comprobación de permisos de página)
+Route::get('/topics', [TopicsController::class, 'mostrar'])
+    ->middleware('auth')
+    ->name('topics.index');

@@ -56,15 +56,19 @@
                         <h6 class="text-white-50 text-uppercase">Menú Principal</h6>
                     </div>
                     <nav class="nav flex-column px-3" aria-label="dashboard">
+                        @php
+                            $currentRoute = Route::currentRouteName();
+                            $currentBase = $currentRoute ? Str::before($currentRoute, '.') : '';
+                        @endphp
                         @if(empty($modules))
                             <a class="nav-link active" href="{{ route('dashboard') }}">
                                 <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                             </a>
                         @else
                             @foreach($modules as $module)
-                                @if(empty($module->sub_pages))
+                                    @if(empty($module->sub_pages))
                                     <a
-                                        class="nav-link {{ Str::before(Route::currentRouteName(), '.') == Str::before($module->route, '.') ? 'active' : '' }}"
+                                        class="nav-link {{ $currentBase == Str::before($module->route, '.') ? 'active' : '' }}"
                                         href="{{ route($module->route) }}"
                                     >
                                         <i class="fas fa-file-alt me-2"></i>{{ $module->page_name }}
@@ -75,8 +79,8 @@
                                     </a>
                                     <div class="collapse ps-3" id="module-{{ $module->id }}">
                                         @foreach($module->sub_pages as $sub_page)
-                                            @if(empty($sub_page->components))
-                                                <a class="nav-link {{ Str::before(Route::currentRouteName(), '.') == Str::before($sub_page->route, '.') ? 'active' : '' }}" href="{{ route($sub_page->route) }}">
+                                                @if(empty($sub_page->components))
+                                                <a class="nav-link {{ $currentBase == Str::before($sub_page->route, '.') ? 'active' : '' }}" href="{{ route($sub_page->route) }}">
                                                     <i class="fas fa-file-alt me-2"></i>{{ $sub_page->page_name }}
                                                 </a>
                                             @else
@@ -86,7 +90,7 @@
                                                 <div class="collapse ps-3" id="subpage-{{ $sub_page->id }}">
                                                     @foreach($sub_page->components as $component)
                                                         <a
-                                                            class="nav-link {{ Str::before(Route::currentRouteName(), '.') == Str::before($component->route, '.') ? 'active' : '' }}"
+                                                            class="nav-link {{ $currentBase == Str::before($component->route, '.') ? 'active' : '' }}"
                                                             href="{{ route($component->route) }}"
                                                         >
                                                             <i class="fas fa-cube me-2"></i>{{ $component->page_name }}
@@ -99,6 +103,16 @@
                                 @endif
                             @endforeach
                         @endif
+
+                        <!-- Administración de Colegio (estático) -->
+                        <a class="nav-link" href="#admin-colegio" data-bs-toggle="collapse" aria-expanded="false">
+                            <i class="fas fa-school me-2"></i>Administración de Colegio
+                        </a>
+                        <div class="collapse ps-3" id="admin-colegio">
+                            <a class="nav-link {{ $currentBase == 'topics' ? 'active' : '' }}" href="{{ route('topics.index') }}">
+                                <i class="fas fa-book me-2"></i>Administración de temas
+                            </a>
+                        </div>
                     </nav>
                 </div>
             </div>
