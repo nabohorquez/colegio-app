@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionSuperAdmin::class);
         $this->call(ModulePage::class);
         $this->call(PagePage::class);
+        $this->call(TopicsSeeder::class);
     }
 }

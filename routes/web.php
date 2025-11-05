@@ -46,10 +46,6 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::delete('/{id}', [PageController::class, 'delete'])->name('delete');
     });
 
-    Route::get('/topics', [TopicsController::class, 'mostrar']);
+    // Rutas de topics con comprobación de permisos
+    Route::resource('topics', TopicsController::class);
 });
-
-// Ruta de topics accesible para usuarios autenticados (sin comprobación de permisos de página)
-Route::get('/topics', [TopicsController::class, 'mostrar'])
-    ->middleware('auth')
-    ->name('topics.index');
