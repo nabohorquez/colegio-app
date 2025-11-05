@@ -46,6 +46,14 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::delete('/{id}', [PageController::class, 'delete'])->name('delete');
     });
 
+    // Rutas de administración de colegio
+    Route::prefix('school')->name('school.')->group(function () {
+        Route::get('/admin', function() {
+            return view('school_admin.index');
+        })->name('admin');
+    });
+
     // Rutas de topics con comprobación de permisos
     Route::resource('topics', TopicsController::class);
+
 });

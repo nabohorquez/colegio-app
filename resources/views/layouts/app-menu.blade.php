@@ -66,10 +66,13 @@
                             </a>
                         @else
                             @foreach($modules as $module)
+                                    @php
+                                        $moduleRoute = $module->route ?? '';
+                                    @endphp
                                     @if(empty($module->sub_pages))
                                     <a
-                                        class="nav-link {{ $currentBase == Str::before($module->route, '.') ? 'active' : '' }}"
-                                        href="{{ route($module->route) }}"
+                                        class="nav-link {{ ($moduleRoute && Route::has($moduleRoute) && $currentBase == Str::before($moduleRoute, '.')) ? 'active' : '' }} {{ (!$moduleRoute || !Route::has($moduleRoute)) ? 'disabled' : '' }}"
+                                        href="{{ ($moduleRoute && Route::has($moduleRoute)) ? route($moduleRoute) : '#' }}"
                                     >
                                         <i class="fas fa-file-alt me-2"></i>{{ $module->page_name }}
                                     </a>
@@ -79,8 +82,9 @@
                                     </a>
                                     <div class="collapse ps-3" id="module-{{ $module->id }}">
                                         @foreach($module->sub_pages as $sub_page)
+                                                @php $subRoute = $sub_page->route ?? ''; @endphp
                                                 @if(empty($sub_page->components))
-                                                <a class="nav-link {{ $currentBase == Str::before($sub_page->route, '.') ? 'active' : '' }}" href="{{ route($sub_page->route) }}">
+                                                <a class="nav-link {{ ($subRoute && Route::has($subRoute) && $currentBase == Str::before($subRoute, '.')) ? 'active' : '' }} {{ (!$subRoute || !Route::has($subRoute)) ? 'disabled' : '' }}" href="{{ ($subRoute && Route::has($subRoute)) ? route($subRoute) : '#' }}">
                                                     <i class="fas fa-file-alt me-2"></i>{{ $sub_page->page_name }}
                                                 </a>
                                             @else
@@ -89,9 +93,10 @@
                                                 </a>
                                                 <div class="collapse ps-3" id="subpage-{{ $sub_page->id }}">
                                                     @foreach($sub_page->components as $component)
+                                                        @php $compRoute = $component->route ?? ''; @endphp
                                                         <a
-                                                            class="nav-link {{ $currentBase == Str::before($component->route, '.') ? 'active' : '' }}"
-                                                            href="{{ route($component->route) }}"
+                                                            class="nav-link {{ ($compRoute && Route::has($compRoute) && $currentBase == Str::before($compRoute, '.')) ? 'active' : '' }} {{ (!$compRoute || !Route::has($compRoute)) ? 'disabled' : '' }}"
+                                                            href="{{ ($compRoute && Route::has($compRoute)) ? route($compRoute) : '#' }}"
                                                         >
                                                             <i class="fas fa-cube me-2"></i>{{ $component->page_name }}
                                                         </a>
@@ -103,16 +108,6 @@
                                 @endif
                             @endforeach
                         @endif
-
-                        <!-- Administración de Colegio (estático) -->
-                        <a class="nav-link" href="#admin-colegio" data-bs-toggle="collapse" aria-expanded="false">
-                            <i class="fas fa-school me-2"></i>Administración de Colegio
-                        </a>
-                        <div class="collapse ps-3" id="admin-colegio">
-                            <a class="nav-link {{ $currentBase == 'topics' ? 'active' : '' }}" href="{{ route('topics.index') }}">
-                                <i class="fas fa-book me-2"></i>Administración de temas
-                            </a>
-                        </div>
                     </nav>
                 </div>
             </div>

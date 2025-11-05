@@ -1,6 +1,6 @@
 @extends('layouts.app-menu')
 
-@section('title', 'Gestión de Temas')
+@section('title', 'Administrador de Temas')
 
 @section('content-principal')
     <div class="container">
@@ -9,7 +9,7 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h3 class="card-title m-0">Temas</h3>
+                            <h3 class="card-title m-0">Administrador de Temas</h3>
                             <span class="badge bg-primary">{{ $topics->count() }} temas</span>
                         </div>
 
@@ -35,7 +35,8 @@
                                 <tbody>
                                     @forelse($topics as $topic)
                                         <tr>
-                                            <td class="d-flex gap-1">
+                                            <td>
+                                            <div class="d-flex gap-1">
                                                 <a href="{{ route('topics.show', $topic) }}" class="btn btn-sm btn-info" title="Ver">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
@@ -50,6 +51,7 @@
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </form>
+                                            </div>
                                             </td>
                                             <td>{{ $topic->title }}</td>
                                             <td>{{ Str::limit($topic->description, 100) }}</td>

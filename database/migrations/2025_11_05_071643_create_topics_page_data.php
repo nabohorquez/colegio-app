@@ -1,46 +1,51 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
+use App\Models\Page;
+use App\Models\PageType;
+use App\Models\Role;
+use App\Models\Permission;
+use App\Models\RoleByPage;
 
 return new class extends Migration
 {
     public function up()
     {
-        // 1. Insertar el tipo de página si no existe
-        $pageTypeId = DB::table('page_types')->where('type_name', 'Temas')->first()?->id;
-        
-        if (!$pageTypeId) {
-            $pageTypeId = DB::table('page_types')->insertGetId([
-                'type_name' => 'Temas',
-                'description' => 'Gestión de temas académicos',
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+        // 1. Obtener o crear el tipo de página
+        $pageType = PageType::firstOrCreate(
+            ['type_name' => 'Temas'],
+            ['description' => 'Gestión de temas académicos']
+        );
 
-        // 2. Insertar la página de temas
-        $pageId = DB::table('pages')->insertGetId([
+        // Obtener o crear la página padre (Administración de Colegio)
+        $parentPage = Page::firstOrCreate(
+            ['page_name' => 'Administración de Colegio'],
+            [
+                'description' => 'Módulo de administración del colegio',
+                'route' => 'school.admin',
+                'id_page_type' => PageType::where('type_name', 'Administración')->first()?->id ?? 1,
+            ]
+        );
+
+        // 2. Crear la página de temas
+        $page = Page::create([
             'page_name' => 'Gestión de Temas',
-            'description' => 'Administración de temas académicos',
+            'description' => 'Gestión de temas académicos del colegio',
             'route' => 'topics.index',
-
-            'id_page_type' => $pageTypeId,
-            'created_at' => now(),
-            'updated_at' => now()
+            'id_page_type' => $pageType->id,
+            'id_father_page' => $parentPage->id,
         ]);
 
-        // 3. Asignar permisos a roles (asumiendo que el rol de administrador tiene ID 1)
-        $adminRoleId = DB::table('roles')->where('rol_name', 'Administrador')->first()?->id;
+        // 3. Asignar permisos a roles
+        $adminRole = Role::where('rol_name', 'Administrador')->first();
         
-        if ($adminRoleId) {
-            // Obtener IDs de los permisos
-            $permissions = DB::table('permissions')->get();
+        if ($adminRole && $page) {
+            $permissions = Permission::all();
             
             foreach ($permissions as $permission) {
-                DB::table('roles_by_pages')->insert([
-                    'id_role' => $adminRoleId,
-                    'id_page' => $pageId,
+                RoleByPage::create([
+                    'id_role' => $adminRole->id,
+                    'id_page' => $page->id,
                     'id_permission' => $permission->id
                 ]);
             }
@@ -49,24 +54,20 @@ return new class extends Migration
 
     public function down()
     {
-        // Obtener el ID de la página de temas
-        $page = DB::table('pages')->where('route', 'topics.index')->first();
+        $page = Page::where('route', 'topics.index')->first();
         
         if ($page) {
             // Eliminar los permisos de roles relacionados
-            DB::table('roles_by_pages')->where('id_page', $page->id)->delete();
+            RoleByPage::where('id_page', $page->id)->delete();
             
             // Eliminar la página
-            DB::table('pages')->where('id', $page->id)->delete();
+            $page->delete();
         }
 
         // Eliminar el tipo de página si no tiene otras páginas asociadas
-        $pageType = DB::table('page_types')->where('type_name', 'Temas')->first();
-        if ($pageType) {
-            $hasPages = DB::table('pages')->where('id_page_type', $pageType->id)->exists();
-            if (!$hasPages) {
-                DB::table('page_types')->where('id', $pageType->id)->delete();
-            }
+        $pageType = PageType::where('type_name', 'Temas')->first();
+        if ($pageType && !$pageType->pages()->exists()) {
+            $pageType->delete();
         }
     }
 };
