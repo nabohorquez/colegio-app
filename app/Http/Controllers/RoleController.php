@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\Models\Role as ModelRole;
+use App\Models\RoleByPage;
 use App\Models\User;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Str;
+use RolesByPages;
 
 class RoleController extends Controller
 {
@@ -19,7 +22,33 @@ class RoleController extends Controller
     public function getById($id)
     {
         $role = $this->getRoleById($id);
-        return response()->json($role);
+        list($modules, $permissions) = $this->getModulesAndPermissions();
+
+        $pagePermissions = [];
+
+        if ($role->pagesByRole) {
+            $role->pagesByRole->each(function($pr) use (&$pagePermissions) {
+                $pagePermissions[$pr->id_page][] = $pr->id_permission;
+            });
+        }
+
+        return view('roles.form', [
+            "role" => $role,
+            "modules" => $modules,
+            "permissions" => $permissions,
+            "pagePermissions" => $pagePermissions
+        ]);
+    }
+
+    public function viewCreate()
+    {
+        list($modules, $permissions) = $this->getModulesAndPermissions();
+
+        return view('roles.form', [
+            "role" => [],
+            "modules" => $modules,
+            "permissions" => $permissions
+        ]);
     }
 
     public function create(Request $request)
@@ -27,10 +56,13 @@ class RoleController extends Controller
         $request->validate([
             'rol_name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'integer|exists:permissions,id',
         ]);
 
         if ($this->validateRoleData($request->rol_name)) {
-            return response()->json(['message' => 'El rol ya existe'], 400);
+            return redirect()->route('roles.index')
+                ->with('error', 'El rol ya existe.');
         }
 
         $role = ModelRole::create([
@@ -38,7 +70,10 @@ class RoleController extends Controller
             'description' => $request->description,
         ]);
 
-        return response()->json($role, 201);
+        $this->saveRolesByPages($role, $request->permissions ?? []);
+
+        return redirect()->route('roles.index', $role->id)
+            ->with('success', 'Rol creado.');
     }
 
     public function update(Request $request, $id)
@@ -48,29 +83,36 @@ class RoleController extends Controller
         $request->validate([
             'rol_name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
+            'permissions' => 'nullable|array',
         ]);
 
         if ($this->validateRoleData($request->rol_name, $id)) {
-            return response()->json(['message' => 'El rol ya existe'], 400);
+            return redirect()->route('roles.index', $role->id)
+                ->with('error', 'El rol ya existe.');
         }
 
         $role->update($request->only(['rol_name', 'description']));
 
-        return response()->json($role);
+        $this->saveRolesByPages($role, $request->permissions ?? []);
+
+        return redirect()->route('roles.index', $role->id)
+            ->with('success', 'Rol actualizado.');
     }
 
     public function delete($id)
     {
         $role = $this->getRoleById($id);
 
+        RoleByPage::where('id_role', $role->id)->delete();
         $role->delete();
-        return response()->json(['message' => 'Rol eliminado correctamente']);
+
+        return redirect()->route('roles.index')
+            ->with('success', 'Rol eliminado.');
     }
 
     private function validateRoleData(string $rolName, ?int $id = null): bool
     {
-        $modelRole = new ModelRole();
-        $modelRole->where('rol_name', $rolName);
+        $modelRole = ModelRole::where('rol_name', $rolName);
         if ($id) {
             $modelRole->where('id', '!=', $id);
         }
@@ -81,7 +123,8 @@ class RoleController extends Controller
 
     private function getRoleById(int $id)
     {
-        $role = ModelRole::find($id);
+        $role = ModelRole::with('pagesByRole')->where('id', $id)->first();
+
         if ($role) {
             return $role;
         } else {
@@ -123,5 +166,43 @@ class RoleController extends Controller
         })->first();
 
         return $permissions ? $permissions->filter()->values()->toArray() : [];
+    }
+
+    public function getModulesAndPermissions()
+    {
+        $modules = (new PageController())->getAllPagesByModules();
+        $permissions = Permission::all();
+
+        $spanishPermissions = [
+            'view' => 'Ver',
+            'create' => 'Crear',
+            'edit' => 'Editar',
+            'delete' => 'Eliminar',
+            'export' => 'Exportar',
+            'import' => 'Importar',
+        ];
+
+        $permissions = $permissions->mapWithKeys(function ($permission) use ($spanishPermissions) {
+            return [$permission->id => $spanishPermissions[$permission->permission] ?? $permission->permission];
+        });
+
+        return [
+            $modules,
+            $permissions
+        ];
+    }
+
+    private function saveRolesByPages(ModelRole $role, array $permissions)
+    {
+        RoleByPage::where('id_role', $role->id)->delete();
+
+        foreach ($permissions as $permission) {
+            list($pageId, $permissionId) = explode('-', $permission);
+            RoleByPage::create([
+                'id_role' => $role->id,
+                'id_page' => $pageId,
+                'id_permission' => $permissionId,
+            ]);
+        }
     }
 }
