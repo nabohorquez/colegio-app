@@ -52,15 +52,17 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::delete('/{id}', [PageController::class, 'delete'])->name('delete');
     });
 
-    // Tipos de matrícula (Enrollment Types)
-    Route::resource('enrollmenttypes', EnrollmentTypeController::class)
-        ->names([
-            'index' => 'enrollment-types.index',
-            'create' => 'enrollment-types.create',
-            'store' => 'enrollment-types.store',
-            'show' => 'enrollment-types.show',
-            'edit' => 'enrollment-types.edit',
-            'update' => 'enrollmenttypes.update',
-            'destroy' => 'enrollmenttypes.destroy',
-        ]);
+    Route::prefix('enrollment-types')->name('enrollment-types.')->group(function () {
+        Route::get('/', [EnrollmentTypeController::class, 'getAll'])->name('index');
+        Route::get('/create', [EnrollmentTypeController::class, 'viewCreate'])->name('create');
+        Route::post('/', [EnrollmentTypeController::class, 'create'])->name('store');
+        Route::get('/{id}', [EnrollmentTypeController::class, 'getById'])->name('edit');
+        Route::put('/{id}', [EnrollmentTypeController::class, 'update'])->name('update');
+        Route::delete('/{id}', [EnrollmentTypeController::class, 'delete'])->name('destroy');
+        Route::get('/{id}/show', [EnrollmentTypeController::class, 'show'])->name('show');
+    });
+
+
+
+
 });
