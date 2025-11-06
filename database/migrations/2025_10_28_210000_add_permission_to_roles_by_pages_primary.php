@@ -14,8 +14,13 @@ class AddPermissionToRolesByPagesPrimary extends Migration
     public function up()
     {
         Schema::table('roles_by_pages', function (Blueprint $table) {
-            $table->dropForeign(['id_role']);
-            $table->dropForeign(['id_pages']);
+            // Drop foreign keys if they exist
+            $foreignKeys = Schema::getConnection()->getDoctrineSchemaManager()->listTableForeignKeys('roles_by_pages');
+            foreach ($foreignKeys as $foreignKey) {
+                if ($foreignKey->getLocalColumns() === ['id_role'] || $foreignKey->getLocalColumns() === ['id_pages']) {
+                    $table->dropForeign($foreignKey->getName());
+                }
+            }
             $table->dropPrimary();
         });
 
@@ -35,9 +40,15 @@ class AddPermissionToRolesByPagesPrimary extends Migration
     public function down()
     {
         Schema::table('roles_by_pages', function (Blueprint $table) {
-            $table->dropForeign(['id_permission']);
-            $table->dropForeign(['id_role']);
-            $table->dropForeign(['id_page']);
+            // Drop foreign keys if they exist
+            $foreignKeys = Schema::getConnection()->getDoctrineSchemaManager()->listTableForeignKeys('roles_by_pages');
+            foreach ($foreignKeys as $foreignKey) {
+                if ($foreignKey->getLocalColumns() === ['id_permission'] || 
+                    $foreignKey->getLocalColumns() === ['id_role'] || 
+                    $foreignKey->getLocalColumns() === ['id_page']) {
+                    $table->dropForeign($foreignKey->getName());
+                }
+            }
             $table->dropPrimary();
         });
 

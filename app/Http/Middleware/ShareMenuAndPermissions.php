@@ -26,14 +26,16 @@ class ShareMenuAndPermissions
 
             $modules = collect($modules);
 
+            // Get current route name; Route::currentRouteName() can return null when
+            // a route has not been given a name. Avoid passing null to the controller
+            // which expects a string.
             $routeName = Route::currentRouteName();
 
-            // Si no hay nombre de ruta (por ejemplo: 404 u otras rutas sin nombre),
-            // no intentamos resolver permisos y devolvemos un array vacío.
             if (!$routeName) {
+                // No named route: don't attempt to resolve permissions
                 $permissions = [];
             } else {
-                $moduleName = Str::before($routeName, '.') ?? $routeName;
+                $moduleName = Str::before($routeName, '.');
                 $permissions = (new RoleController())->getPermissionsPageByRoleId($userId, $moduleName);
             }
 

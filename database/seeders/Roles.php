@@ -14,9 +14,10 @@ class Roles extends Seeder
      */
     public function run()
     {
-        $roles = new Role();
-        $roles->rol_name = 'SuperAdministrador';
-        $roles->description = 'Super Administrador del aplicativo, solo uso para sistemas';
-        $roles->save();
+        // Use firstOrCreate so seeding is idempotent and safe to run multiple times
+        Role::firstOrCreate(
+            ['rol_name' => 'SuperAdministrador'],
+            ['description' => 'Super Administrador del aplicativo, solo uso para sistemas']
+        );
     }
 }

@@ -11,41 +11,46 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = 'users';
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+ protected $fillable = [
+    'name',
+    'first_name',
+    'last_name',
+    'email',
+    'username',   
+    'password',
+];
+
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
     /**
-     * Get the roles by user for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * Accessor para obtener nombre completo
      */
+    public function getFullNameAttribute()
+    {
+        return trim("{$this->first_name} {$this->last_name}");
+    }
+
+    /**
+     * Sincronizar automáticamente el campo name al guardar el modelo
+     */
+    protected static function booted()
+    {
+        static::saving(function ($user) {
+            if ($user->first_name || $user->last_name) {
+                $user->name = trim("{$user->first_name} {$user->last_name}");
+            }
+        });
+    }
+
     public function usersByRoles()
     {
         return $this->hasMany(RoleByUser::class, 'id_user', 'id');

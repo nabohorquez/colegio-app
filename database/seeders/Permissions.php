@@ -20,7 +20,10 @@ class Permissions extends Seeder
         ];
 
         foreach ($permissions as $permissionData) {
-            \App\Models\Permission::create($permissionData);
+            // Make seeding idempotent: don't insert duplicates
+            \App\Models\Permission::firstOrCreate([
+                'permission' => $permissionData['permission'],
+            ]);
         }
     }
 }
