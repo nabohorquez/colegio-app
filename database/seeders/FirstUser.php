@@ -14,11 +14,14 @@ class FirstUser extends Seeder
      */
     public function run()
     {
-        $user = new User();
-        $user->name = 'Superadmin';
-        $user->email = 'email@email.com';
-        $user->password = bcrypt('@Superadmin123');
-
-        $user->save();
+        // Make seeder idempotent: create the user if it doesn't exist
+        User::firstOrCreate(
+            ['email' => 'email@email.com'],
+            [
+                'name' => 'Superadmin',
+                'username' => 'superadmin',
+                'password' => bcrypt('@Superadmin123'),
+            ]
+        );
     }
 }

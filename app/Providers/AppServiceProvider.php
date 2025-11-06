@@ -28,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // El middleware `ShareMenuAndPermissions` comparte la variable `modules`
+        // para la vista del menú y maneja permisos/caché. Evitamos duplicar la
+        // lógica aquí para no sobrescribir o interferir con la variable compartida.
     }
 }
