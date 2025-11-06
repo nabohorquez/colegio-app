@@ -10,6 +10,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\StudentController;
 
+use App\Http\Controllers\TopicsController;
 
 // Ruta raíz redirige al login
 Route::get('/', function () {
@@ -49,49 +50,57 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::delete('/{id}', [PageController::class, 'delete'])->name('delete');
     });
 
-Route::middleware(['auth', 'check.page.permissions'])->prefix('employees')->name('employees.')->group(function () {
-    Route::get('/', [EmployeeController::class, 'getAll'])->name('index');
-    Route::get('/create', [EmployeeController::class, 'viewCreate'])->name('viewCreate');
-    Route::post('/', [EmployeeController::class, 'create'])->name('create');
-    Route::get('/{id}', [EmployeeController::class, 'getById'])->name('getById');
-    Route::put('/{id}', [EmployeeController::class, 'update'])->name('update');
-    Route::delete('/{id}', [EmployeeController::class, 'delete'])->name('delete');
-});
+    Route::middleware(['auth', 'check.page.permissions'])->prefix('employees')->name('employees.')->group(function () {
+        Route::get('/', [EmployeeController::class, 'getAll'])->name('index');
+        Route::get('/create', [EmployeeController::class, 'viewCreate'])->name('viewCreate');
+        Route::post('/', [EmployeeController::class, 'create'])->name('create');
+        Route::get('/{id}', [EmployeeController::class, 'getById'])->name('getById');
+        Route::put('/{id}', [EmployeeController::class, 'update'])->name('update');
+        Route::delete('/{id}', [EmployeeController::class, 'delete'])->name('delete');
+    });
 
-Route::prefix('employees')->name('employees.')->group(function () {
-    Route::get('/', [EmployeeController::class, 'getAll'])->name('index');
-    Route::get('/create', [EmployeeController::class, 'viewCreate'])->name('viewCreate');
-    Route::post('/', [EmployeeController::class, 'create'])->name('create');
-    Route::get('/{id}', [EmployeeController::class, 'getById'])->name('getById'); // ✅ para modal
-    Route::put('/{id}', [EmployeeController::class, 'update'])->name('update'); // ✅ AJAX update
-    Route::delete('/{id}', [EmployeeController::class, 'delete'])->name('delete');
-    Route::delete('/employees/{id}', [EmployeeController::class, 'delete'])->name('employees.delete');
-
-});
-
-
-Route::middleware(['auth', 'check.page.permissions'])->group(function () {
-
-    Route::prefix('guardians')->name('guardians.')->group(function () {
-        Route::get('/', [GuardianController::class, 'getAll'])->name('index');
-        Route::get('/{id}', [GuardianController::class, 'getById'])->name('getById');
-        Route::post('/', [GuardianController::class, 'create'])->name('create');
-        Route::put('/{id}', [GuardianController::class, 'update'])->name('update');
-        Route::delete('/{id}', [GuardianController::class, 'delete'])->name('delete');
-        Route::get('/guardians/create', [GuardianController::class, 'viewCreate'])->name('guardians.viewCreate');
+    Route::prefix('employees')->name('employees.')->group(function () {
+        Route::get('/', [EmployeeController::class, 'getAll'])->name('index');
+        Route::get('/create', [EmployeeController::class, 'viewCreate'])->name('viewCreate');
+        Route::post('/', [EmployeeController::class, 'create'])->name('create');
+        Route::get('/{id}', [EmployeeController::class, 'getById'])->name('getById'); // ✅ para modal
+        Route::put('/{id}', [EmployeeController::class, 'update'])->name('update'); // ✅ AJAX update
+        Route::delete('/{id}', [EmployeeController::class, 'delete'])->name('delete');
+        Route::delete('/employees/{id}', [EmployeeController::class, 'delete'])->name('employees.delete');
 
     });
 
-   Route::prefix('students')->name('students.')->group(function () {
-        Route::get('/', [StudentController::class, 'index'])->name('index');
-        Route::post('/', [StudentController::class, 'store'])->name('store');
-        Route::get('/{id}', [StudentController::class, 'getById'])->name('show');
-        Route::put('/{id}', [StudentController::class, 'update'])->name('update');
-        Route::delete('/{id}', [StudentController::class, 'destroy'])->name('destroy');
+
+    Route::middleware(['auth', 'check.page.permissions'])->group(function () {
+        Route::prefix('guardians')->name('guardians.')->group(function () {
+            Route::get('/', [GuardianController::class, 'getAll'])->name('index');
+            Route::get('/{id}', [GuardianController::class, 'getById'])->name('getById');
+            Route::post('/', [GuardianController::class, 'create'])->name('create');
+            Route::put('/{id}', [GuardianController::class, 'update'])->name('update');
+            Route::delete('/{id}', [GuardianController::class, 'delete'])->name('delete');
+            Route::get('/guardians/create', [GuardianController::class, 'viewCreate'])->name('guardians.viewCreate');
+
+        });
+
+        Route::prefix('students')->name('students.')->group(function () {
+            Route::get('/', [StudentController::class, 'index'])->name('index');
+            Route::post('/', [StudentController::class, 'store'])->name('store');
+            Route::get('/{id}', [StudentController::class, 'getById'])->name('show');
+            Route::put('/{id}', [StudentController::class, 'update'])->name('update');
+            Route::delete('/{id}', [StudentController::class, 'destroy'])->name('destroy');
+        });
     });
 
 
-});
 
+    // Rutas de administración de colegio
+    Route::prefix('school')->name('school.')->group(function () {
+        Route::get('/admin', function() {
+            return view('school_admin.index');
+        })->name('admin');
+    });
+
+    // Rutas de topics con comprobación de permisos
+    Route::resource('topics', TopicsController::class);
 
 });

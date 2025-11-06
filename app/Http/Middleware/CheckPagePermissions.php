@@ -18,7 +18,13 @@ class CheckPagePermissions
         }
 
         $routeName = Route::currentRouteName();
-        $moduleName = Str::before($routeName, '.') ?? $routeName;
+
+        // Si no hay nombre de ruta, no intentamos resolver permisos (evita pasar null a Str::before)
+        if (!$routeName) {
+            return redirect('/dashboard')->with('error', 'No tienes permisos para acceder a esta sección.');
+        }
+
+        $moduleName = Str::before($routeName, '.') ?: $routeName;
         $permissions = (new RoleController())->getPermissionsPageByRoleId($user->id, $moduleName);
 
         if (empty($permissions)) {

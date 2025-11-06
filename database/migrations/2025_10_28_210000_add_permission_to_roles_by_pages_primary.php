@@ -26,7 +26,6 @@ class AddPermissionToRolesByPagesPrimary extends Migration
 
         Schema::table('roles_by_pages', function (Blueprint $table) {
             $table->renameColumn('id_pages', 'id_page');
-            // id_permission was already added in previous migration
             $table->foreign('id_role')->references('id')->on('roles');
             $table->foreign('id_page')->references('id')->on('pages');
             $table->primary(['id_role', 'id_page', 'id_permission']);
