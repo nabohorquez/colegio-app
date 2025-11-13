@@ -103,4 +103,13 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
     // Rutas de topics con comprobación de permisos
     Route::resource('topics', TopicsController::class);
 
+
+    Route::prefix('roles')->name('roles.')->group(function () {
+        Route::get('/', [RoleController::class, 'getAll'])->name('index');
+        Route::get('/create', [RoleController::class, 'viewCreate'])->name('viewCreate');
+        Route::post('/', [RoleController::class, 'create'])->name('create');
+        Route::get('/{id}', [RoleController::class, 'getById'])->name('getById');
+        Route::put('/{id}', [RoleController::class, 'update'])->name('update');
+        Route::delete('/{id}', [RoleController::class, 'delete'])->name('delete');
+    });
 });
