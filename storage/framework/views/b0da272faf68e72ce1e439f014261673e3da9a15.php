@@ -38,8 +38,9 @@
             </div>
             
             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="estado" name="estado" 
-                    <?php echo e((isset($grade) && !$grade->estado) ? '' : 'checked'); ?>
+                <input type="hidden" name="estado" value="0">
+                <input type="checkbox" class="form-check-input" id="estado" name="estado" value="1"
+                    <?php echo e((isset($grade) && $grade->estado) ? 'checked' : ''); ?>
 
                 >
                 <label class="form-check-label" for="estado">

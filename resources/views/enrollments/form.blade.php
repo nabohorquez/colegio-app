@@ -66,9 +66,29 @@
             
             <div class="mb-3">
                 <label for="forma_pago" class="form-label">Forma de Pago</label>
-                <input type="text" class="form-control" id="forma_pago" name="forma_pago"
-                    value="{{ $enrollment->forma_pago ?? 'mensual' }}" required
+                <select class="form-control" id="forma_pago" name="forma_pago" required>
+                    <option value="">Seleccionar forma de pago...</option>
+                    <option value="efectivo" {{ (isset($enrollment) && $enrollment->forma_pago == 'efectivo') ? 'selected' : '' }}>Efectivo</option>
+                    <option value="cheque" {{ (isset($enrollment) && $enrollment->forma_pago == 'cheque') ? 'selected' : '' }}>Cheque</option>
+                    <option value="transferencia" {{ (isset($enrollment) && $enrollment->forma_pago == 'transferencia') ? 'selected' : '' }}>Transferencia</option>
+                    <option value="tarjeta de crédito" {{ (isset($enrollment) && $enrollment->forma_pago == 'tarjeta de crédito') ? 'selected' : '' }}>Tarjeta de Crédito</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="costo" class="form-label">Costo de Matrícula</label>
+                <input type="number" step="0.01" class="form-control" id="costo" name="costo"
+                    value="{{ $enrollment->costo ?? '500000' }}"
                 >
+            </div>
+            
+            <div class="mb-3">
+                <label for="estado_pago" class="form-label">Estado de Pago</label>
+                <select class="form-control" id="estado_pago" name="estado_pago" required>
+                    <option value="pendiente" {{ (isset($enrollment) && $enrollment->estado_pago == 'pendiente') ? 'selected' : '' }}>Pendiente</option>
+                    <option value="parcial" {{ (isset($enrollment) && $enrollment->estado_pago == 'parcial') ? 'selected' : '' }}>Parcial</option>
+                    <option value="pagado" {{ (isset($enrollment) && $enrollment->estado_pago == 'pagado') ? 'selected' : '' }}>Pagado</option>
+                </select>
             </div>
             
             <div class="mb-3">

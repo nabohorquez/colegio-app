@@ -46,6 +46,8 @@ class EnrollmentController extends Controller
             'grado_id' => 'required|exists:grades,id',
             'tipo_matricula_id' => 'required|exists:enrollment_types,id',
             'forma_pago' => 'required|string|max:100',
+            'costo' => 'nullable|numeric|min:0',
+            'estado_pago' => 'required|in:pendiente,parcial,pagado',
             'fecha' => 'required|date',
             'estado' => 'boolean'
         ]);
@@ -55,6 +57,8 @@ class EnrollmentController extends Controller
             'grado_id' => $request->grado_id,
             'tipo_matricula_id' => $request->tipo_matricula_id,
             'forma_pago' => $request->forma_pago,
+            'costo' => $request->costo,
+            'estado_pago' => $request->estado_pago,
             'fecha' => $request->fecha,
             'estado' => $request->boolean('estado', true)
         ]);
@@ -72,6 +76,8 @@ class EnrollmentController extends Controller
             'grado_id' => 'required|exists:grades,id',
             'tipo_matricula_id' => 'required|exists:enrollment_types,id',
             'forma_pago' => 'required|string|max:100',
+            'costo' => 'nullable|numeric|min:0',
+            'estado_pago' => 'required|in:pendiente,parcial,pagado',
             'fecha' => 'required|date',
             'estado' => 'boolean'
         ]);
@@ -81,6 +87,8 @@ class EnrollmentController extends Controller
             'grado_id' => $request->grado_id,
             'tipo_matricula_id' => $request->tipo_matricula_id,
             'forma_pago' => $request->forma_pago,
+            'costo' => $request->costo,
+            'estado_pago' => $request->estado_pago,
             'fecha' => $request->fecha,
             'estado' => $request->boolean('estado', true)
         ]);

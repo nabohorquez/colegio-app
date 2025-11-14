@@ -43,6 +43,7 @@ return new class extends Migration
             $permissions = Permission::all();
             
             foreach ($permissions as $permission) {
+                /** @var Permission $permission */
                 RoleByPage::create([
                     'id_role' => $adminRole->id,
                     'id_page' => $page->id,

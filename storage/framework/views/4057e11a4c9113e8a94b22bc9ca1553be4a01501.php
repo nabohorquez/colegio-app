@@ -25,6 +25,8 @@
                     <th>Grado</th>
                     <th>Tipo de Matrícula</th>
                     <th>Forma de Pago</th>
+                    <th>Costo</th>
+                    <th>Estado de Pago</th>
                     <th>Fecha</th>
                     <th>Estado</th>
                 </tr>
@@ -46,8 +48,15 @@
                         <td><?php echo e($enrollment->student ? $enrollment->student->full_name : 'N/A'); ?></td>
                         <td><?php echo e($enrollment->grade ? $enrollment->grade->nombre_grado : 'N/A'); ?></td>
                         <td><?php echo e($enrollment->enrollmentType ? $enrollment->enrollmentType->nombre_tipo : 'N/A'); ?></td>
-                        <td><?php echo e($enrollment->forma_pago); ?></td>
-                        <td><?php echo e($enrollment->fecha->format('d/m/Y')); ?></td>
+                        <td><?php echo e(ucfirst($enrollment->forma_pago)); ?></td>
+                        <td>$<?php echo e(number_format($enrollment->costo ?? 0, 2)); ?></td>
+                        <td>
+                            <span class="badge <?php echo e($enrollment->estado_pago == 'pagado' ? 'bg-success' : ($enrollment->estado_pago == 'parcial' ? 'bg-warning' : 'bg-danger')); ?>">
+                                <?php echo e(ucfirst($enrollment->estado_pago ?? 'N/A')); ?>
+
+                            </span>
+                        </td>
+                        <td><?php echo e($enrollment->fecha ? $enrollment->fecha->format('d/m/Y') : 'N/A'); ?></td>
                         <td>
                             <span class="badge <?php echo e($enrollment->estado ? 'bg-success' : 'bg-danger'); ?>">
                                 <?php echo e($enrollment->estado ? 'Activo' : 'Inactivo'); ?>

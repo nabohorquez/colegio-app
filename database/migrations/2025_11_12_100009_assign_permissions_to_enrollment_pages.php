@@ -28,6 +28,7 @@ return new class extends Migration
         $permissions = Permission::all();
         
         foreach ($enrollmentPages as $page) {
+            /** @var Page $page */
             // Verificar si ya existen permisos para esta página y rol
             $existingPermissions = RoleByPage::where('id_role', $adminRole->id)
                 ->where('id_page', $page->id)
@@ -36,6 +37,7 @@ return new class extends Migration
             // Si no existen permisos, crearlos
             if ($existingPermissions === 0) {
                 foreach ($permissions as $permission) {
+                    /** @var Permission $permission */
                     RoleByPage::create([
                         'id_role' => $adminRole->id,
                         'id_page' => $page->id,

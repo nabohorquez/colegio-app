@@ -100,6 +100,7 @@ return new class extends Migration
             $permissions = Permission::all();
             
             foreach ($pages as $page) {
+                /** @var Page $page */
                 // Eliminar permisos previos si existen
                 RoleByPage::where('id_role', $adminRole->id)
                     ->where('id_page', $page->id)
@@ -107,6 +108,7 @@ return new class extends Migration
                 
                 // Asignar todos los permisos
                 foreach ($permissions as $permission) {
+                    /** @var Permission $permission */
                     RoleByPage::create([
                         'id_role' => $adminRole->id,
                         'id_page' => $page->id,

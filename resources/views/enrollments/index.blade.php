@@ -23,6 +23,8 @@
                     <th>Grado</th>
                     <th>Tipo de Matrícula</th>
                     <th>Forma de Pago</th>
+                    <th>Costo</th>
+                    <th>Estado de Pago</th>
                     <th>Fecha</th>
                     <th>Estado</th>
                 </tr>
@@ -44,8 +46,14 @@
                         <td>{{ $enrollment->student ? $enrollment->student->full_name : 'N/A' }}</td>
                         <td>{{ $enrollment->grade ? $enrollment->grade->nombre_grado : 'N/A' }}</td>
                         <td>{{ $enrollment->enrollmentType ? $enrollment->enrollmentType->nombre_tipo : 'N/A' }}</td>
-                        <td>{{ $enrollment->forma_pago }}</td>
-                        <td>{{ $enrollment->fecha->format('d/m/Y') }}</td>
+                        <td>{{ ucfirst($enrollment->forma_pago) }}</td>
+                        <td>${{ number_format($enrollment->costo ?? 0, 2) }}</td>
+                        <td>
+                            <span class="badge {{ $enrollment->estado_pago == 'pagado' ? 'bg-success' : ($enrollment->estado_pago == 'parcial' ? 'bg-warning' : 'bg-danger') }}">
+                                {{ ucfirst($enrollment->estado_pago ?? 'N/A') }}
+                            </span>
+                        </td>
+                        <td>{{ $enrollment->fecha ? $enrollment->fecha->format('d/m/Y') : 'N/A' }}</td>
                         <td>
                             <span class="badge {{ $enrollment->estado ? 'bg-success' : 'bg-danger' }}">
                                 {{ $enrollment->estado ? 'Activo' : 'Inactivo' }}

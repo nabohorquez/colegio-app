@@ -27,8 +27,16 @@ class GradeSeeder extends Seeder
             ['nombre_grado' => 'Once de Secundaria', 'nivel' => '11', 'estado' => true],
         ];
 
+        $count = 0;
         foreach ($grades as $grade) {
-            Grade::create($grade);
+            try {
+                Grade::create($grade);
+                $count++;
+            } catch (\Exception $e) {
+                $this->command->error("Error al crear grado {$grade['nombre_grado']}: " . $e->getMessage());
+            }
         }
+        
+        $this->command->info("Se crearon {$count} grados exitosamente.");
     }
 }
