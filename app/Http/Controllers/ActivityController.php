@@ -13,8 +13,8 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        $activities = Activity::with('creator')->latest()->paginate(10);
-        return view('school_admin.activities.index', compact('activities'));
+        $activities = Activity::with("creator")->latest()->paginate(10);
+        return view("school_admin.activities.index", compact("activities"));
     }
 
     /**
@@ -22,7 +22,7 @@ class ActivityController extends Controller
      */
     public function create()
     {
-        return view('school_admin.activities.create');
+        return view("school_admin.activities.create");
     }
 
     /**
@@ -31,18 +31,22 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            "title" => "required|string|max:255",
+            "description" => "nullable|string",
+            "resource_assignment" => "nullable|string",
+            "example_assignment" => "nullable|string",
         ]);
 
         Activity::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'created_by' => Auth::id(),
+            "title" => $request->title,
+            "description" => $request->description,
+            "resource_assignment" => $request->resource_assignment,
+            "example_assignment" => $request->example_assignment,
+            "created_by" => Auth::id(),
         ]);
 
-        return redirect()->route('school.activities.index')
-            ->with('success', 'Actividad creada exitosamente.');
+        return redirect()->route("school.activities.index")
+            ->with("success", "Actividad creada exitosamente.");
     }
 
     /**
@@ -50,7 +54,7 @@ class ActivityController extends Controller
      */
     public function show(Activity $activity)
     {
-        return view('school_admin.activities.show', compact('activity'));
+        return view("school_admin.activities.show", compact("activity"));
     }
 
     /**
@@ -58,7 +62,7 @@ class ActivityController extends Controller
      */
     public function edit(Activity $activity)
     {
-        return view('school_admin.activities.edit', compact('activity'));
+        return view("school_admin.activities.edit", compact("activity"));
     }
 
     /**
@@ -67,14 +71,16 @@ class ActivityController extends Controller
     public function update(Request $request, Activity $activity)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            "title" => "required|string|max:255",
+            "description" => "nullable|string",
+            "resource_assignment" => "nullable|string",
+            "example_assignment" => "nullable|string",
         ]);
 
         $activity->update($request->all());
 
-        return redirect()->route('school.activities.index')
-            ->with('success', 'Actividad actualizada exitosamente');
+        return redirect()->route("school.activities.index")
+            ->with("success", "Actividad actualizada exitosamente");
     }
 
     /**
@@ -84,7 +90,7 @@ class ActivityController extends Controller
     {
         $activity->delete();
 
-        return redirect()->route('school.activities.index')
-            ->with('success', 'Actividad eliminada exitosamente');
+        return redirect()->route("school.activities.index")
+            ->with("success", "Actividad eliminada exitosamente");
     }
 }

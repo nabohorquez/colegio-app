@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        @if ($message = Session::get('success'))
+    @if ($message = Session::get('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>Éxito:</strong> {{ $message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -26,11 +26,13 @@
             <div class="card-body">
                 @if($activities->count() > 0)
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover table-sm">
                             <thead class="table-light">
                                 <tr>
                                     <th>Título</th>
                                     <th>Descripción</th>
+                                    <th>Recursos</th>
+                                    <th>Ejemplos</th>
                                     <th>Creado por</th>
                                     <th>Fecha</th>
                                     <th>Acciones</th>
@@ -40,9 +42,23 @@
                                 @foreach ($activities as $activity)
                                 <tr>
                                     <td><strong>{{ $activity->title }}</strong></td>
-                                    <td>{{ Str::limit($activity->description, 60) }}</td>
-                                    <td>{{ $activity->creator->first_name ?? '' }} {{ $activity->creator->last_name ?? '' }}</td>
-                                    <td>{{ $activity->created_at->format('d/m/Y') }}</td>
+                                    <td>{{ Str::limit($activity->description, 40) }}</td>
+                                    <td>
+                                        @if($activity->resource_assignment)
+                                            <small class="badge bg-info">Sí</small>
+                                        @else
+                                            <small class="badge bg-secondary">No</small>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($activity->example_assignment)
+                                            <small class="badge bg-info">Sí</small>
+                                        @else
+                                            <small class="badge bg-secondary">No</small>
+                                        @endif
+                                    </td>
+                                    <td>{{ $activity->creator->first_name ?? "" }} {{ $activity->creator->last_name ?? "" }}</td>
+                                    <td>{{ $activity->created_at->format("d/m/Y") }}</td>
                                     <td>
                                         <a href="{{ route('school.activities.edit', $activity->id) }}" class="btn btn-sm btn-warning" title="Editar">
                                             <i class="fas fa-edit"></i>

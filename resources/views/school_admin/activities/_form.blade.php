@@ -9,8 +9,24 @@
 
 <div class="mb-3">
     <label for="description" class="form-label">Descripción:</label>
-    <textarea name="description" id="description" rows="5" class="form-control @error('description') is-invalid @enderror">{{ old('description', $activity->description ?? '') }}</textarea>
+    <textarea name="description" id="description" rows="4" class="form-control @error('description') is-invalid @enderror">{{ old('description', $activity->description ?? '') }}</textarea>
     @error('description')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="mb-3">
+    <label for="resource_assignment" class="form-label">Asignación de Recursos:</label>
+    <textarea name="resource_assignment" id="resource_assignment" rows="4" class="form-control @error('resource_assignment') is-invalid @enderror" placeholder="Describe los recursos necesarios para la actividad">{{ old('resource_assignment', $activity->resource_assignment ?? '') }}</textarea>
+    @error('resource_assignment')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="mb-3">
+    <label for="example_assignment" class="form-label">Asignación de Ejemplos:</label>
+    <textarea name="example_assignment" id="example_assignment" rows="4" class="form-control @error('example_assignment') is-invalid @enderror" placeholder="Proporciona ejemplos de la actividad">{{ old('example_assignment', $activity->example_assignment ?? '') }}</textarea>
+    @error('example_assignment')
         <div class="invalid-feedback">{{ $message }}</div>
     @enderror
 </div>

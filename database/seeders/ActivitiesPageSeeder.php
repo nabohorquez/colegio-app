@@ -16,13 +16,16 @@ class ActivitiesPageSeeder extends Seeder
 
         $fatherPage = $pageModel::where('page_name', $fatherPageName)->first();
         if ($fatherPage) {
-            $pageCreated = $pageModel::create([
-                'page_name' => 'Actividades',
-                'route' => 'school.activities.index',
-                'id_page_type' => 2,
-                'description' => 'Gestión de actividades escolares del colegio',
-                'id_father_page' => $fatherPage->id,
-            ]);
+            // Usar firstOrCreate para hacer el seeder idempotente (evita duplicados en ejecuciones repetidas)
+            $pageCreated = $pageModel::firstOrCreate(
+                ['page_name' => 'Actividades'],
+                [
+                    'route' => 'school.activities.index',
+                    'id_page_type' => 2,
+                    'description' => 'Gestión de actividades escolares del colegio',
+                    'id_father_page' => $fatherPage->id,
+                ]
+            );
 
             $superAdminRole = \App\Models\Role::where('rol_name', 'SuperAdministrador')->first();
             $firstUser = \App\Models\User::first();

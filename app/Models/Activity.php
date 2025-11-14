@@ -13,6 +13,8 @@ class Activity extends Model
     protected $fillable = [
         'title',
         'description',
+        'resource_assignment',
+        'example_assignment',
         'created_by'
     ];
 
