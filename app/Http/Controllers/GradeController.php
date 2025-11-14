@@ -29,13 +29,13 @@ class GradeController extends Controller
         $request->validate([
             'nombre_grado' => 'required|string|max:255|unique:grades',
             'nivel' => 'required|string|max:100',
-            'estado' => 'boolean'
+            'estado' => 'in:true,false'
         ]);
 
         $grade = Grade::create([
             'nombre_grado' => $request->nombre_grado,
             'nivel' => $request->nivel,
-            'estado' => $request->boolean('estado', true)
+            'estado' => $request->estado === 'true' ? true : false
         ]);
 
         return redirect()->route('grades.index')
@@ -49,13 +49,13 @@ class GradeController extends Controller
         $request->validate([
             'nombre_grado' => "required|string|max:255|unique:grades,nombre_grado,{$id}",
             'nivel' => 'required|string|max:100',
-            'estado' => 'boolean'
+            'estado' => 'in:true,false'
         ]);
 
         $grade->update([
             'nombre_grado' => $request->nombre_grado,
             'nivel' => $request->nivel,
-            'estado' => $request->boolean('estado', true)
+            'estado' => $request->estado === 'true' ? true : false
         ]);
 
         return redirect()->route('grades.index')

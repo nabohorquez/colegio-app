@@ -29,13 +29,13 @@ class SubjectController extends Controller
         $request->validate([
             'nombre_materia' => 'required|string|max:255|unique:subjects',
             'descripcion' => 'nullable|string',
-            'estado' => 'boolean'
+            'estado' => 'in:true,false'
         ]);
 
         $subject = Subject::create([
             'nombre_materia' => $request->nombre_materia,
             'descripcion' => $request->descripcion,
-            'estado' => $request->boolean('estado', true)
+            'estado' => $request->estado === 'true' ? true : false
         ]);
 
         return redirect()->route('subjects.index')
@@ -49,13 +49,13 @@ class SubjectController extends Controller
         $request->validate([
             'nombre_materia' => "required|string|max:255|unique:subjects,nombre_materia,{$id}",
             'descripcion' => 'nullable|string',
-            'estado' => 'boolean'
+            'estado' => 'in:true,false'
         ]);
 
         $subject->update([
             'nombre_materia' => $request->nombre_materia,
             'descripcion' => $request->descripcion,
-            'estado' => $request->boolean('estado', true)
+            'estado' => $request->estado === 'true' ? true : false
         ]);
 
         return redirect()->route('subjects.index')

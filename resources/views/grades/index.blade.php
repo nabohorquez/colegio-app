@@ -1,66 +1,80 @@
 @extends('layouts.app-menu')
 
-@section('title', 'Grados')
+@section('title', 'Grados - Sistema Escolar')
 
 @section('content-principal')
-    <div class="container mt-5">
-        <h2 class="mb-4">Lista de Grados</h2>
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-            </div>
-        @endif
-        <table class="table table-bordered" id="gradesTable">
-            <thead>
-                <tr>
-                    <th>Acciones</th>
-                    <th>Nombre</th>
-                    <th>Nivel</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($grades as $grade)
-                    <tr>
-                        <td class="d-flex justify-content-center">
-                            <a href="{{ route('grades.getById', $grade->id) }}" class="btn btn-sm btn-warning me-2" title="Editar"><i class="fas fa-edit"></i></a>
-                            <form action="{{ route('grades.delete', $grade->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar"
-                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este grado?')">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                        </td>
-                        <td>{{ $grade->nombre_grado }}</td>
-                        <td>{{ $grade->nivel }}</td>
-                        <td>
-                            <span class="badge {{ $grade->estado ? 'bg-success' : 'bg-danger' }}">
-                                {{ $grade->estado ? 'Activo' : 'Inactivo' }}
-                            </span>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <div class="d-flex justify-content-between align-items-center welcome-header">
+        <div>
+            <h1>Grados</h1>
+            <p>Gestiona los grados disponibles</p>
+        </div>
+        <a href="{{ route('grades.viewCreate') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Nuevo Grado
+        </a>
     </div>
 
-    <div>
-        <button
-            class="btn btn-primary position-fixed rounded-circle"
-            style="bottom: 20px; right: 20px;"
-            type="button"
-            title="Adicionar"
-        >
-            <a href="{{ route('grades.viewCreate') }}">
-                <i class="fas fa-plus h1 text-align-center m-0 my-1 text-white"></i>
-            </a>
-        </button>
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    <div class="section-card">
+        <div class="card-body">
+            @if($grades->count() > 0)
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Nivel</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($grades as $grade)
+                                <tr>
+                                    <td><strong>{{ $grade->nombre_grado }}</strong></td>
+                                    <td>{{ $grade->nivel }}</td>
+                                    <td>
+                                        <span class="badge {{ $grade->estado ? 'bg-success' : 'bg-secondary' }}">
+                                            {{ $grade->estado ? 'Activo' : 'Inactivo' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ route('grades.getById', $grade->id) }}" class="btn btn-outline-primary" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('grades.delete', $grade->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger" title="Eliminar" onclick="return confirm('¿Eliminar este grado?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="text-center py-5">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3" style="display: block;"></i>
+                    <p class="text-muted">No hay grados registrados</p>
+                </div>
+            @endif
+        </div>
     </div>
 @endsection

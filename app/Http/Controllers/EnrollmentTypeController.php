@@ -29,13 +29,13 @@ class EnrollmentTypeController extends Controller
         $request->validate([
             'nombre_tipo' => 'required|string|max:255|unique:enrollment_types',
             'descripcion' => 'nullable|string',
-            'estado' => 'boolean'
+            'estado' => 'in:true,false'
         ]);
 
         $enrollmentType = EnrollmentType::create([
             'nombre_tipo' => $request->nombre_tipo,
             'descripcion' => $request->descripcion,
-            'estado' => $request->boolean('estado', true)
+            'estado' => $request->estado === 'true' ? true : false
         ]);
 
         return redirect()->route('enrollment-types.index')
@@ -49,13 +49,13 @@ class EnrollmentTypeController extends Controller
         $request->validate([
             'nombre_tipo' => "required|string|max:255|unique:enrollment_types,nombre_tipo,{$id}",
             'descripcion' => 'nullable|string',
-            'estado' => 'boolean'
+            'estado' => 'in:true,false'
         ]);
 
         $enrollmentType->update([
             'nombre_tipo' => $request->nombre_tipo,
             'descripcion' => $request->descripcion,
-            'estado' => $request->boolean('estado', true)
+            'estado' => $request->estado === 'true' ? true : false
         ]);
 
         return redirect()->route('enrollment-types.index')

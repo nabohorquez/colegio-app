@@ -39,8 +39,9 @@
             </div>
             
             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="estado" name="estado" 
-                    {{ (isset($enrollment_type) && !$enrollment_type->estado) ? '' : 'checked' }}
+                <input type="hidden" name="estado" value="false">
+                <input type="checkbox" class="form-check-input" id="estado" name="estado" value="true"
+                    {{ (isset($enrollment_type) && $enrollment_type->estado) ? 'checked' : '' }}
                 >
                 <label class="form-check-label" for="estado">
                     Activo

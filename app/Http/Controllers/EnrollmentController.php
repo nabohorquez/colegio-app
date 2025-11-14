@@ -49,7 +49,7 @@ class EnrollmentController extends Controller
             'costo' => 'nullable|numeric|min:0',
             'estado_pago' => 'required|in:pendiente,parcial,pagado',
             'fecha' => 'required|date',
-            'estado' => 'boolean'
+            'estado' => 'in:true,false'
         ]);
 
         $enrollment = Enrollment::create([
@@ -60,7 +60,7 @@ class EnrollmentController extends Controller
             'costo' => $request->costo,
             'estado_pago' => $request->estado_pago,
             'fecha' => $request->fecha,
-            'estado' => $request->boolean('estado', true)
+            'estado' => $request->estado === 'true' ? true : false
         ]);
 
         return redirect()->route('enrollments.index')
@@ -79,7 +79,7 @@ class EnrollmentController extends Controller
             'costo' => 'nullable|numeric|min:0',
             'estado_pago' => 'required|in:pendiente,parcial,pagado',
             'fecha' => 'required|date',
-            'estado' => 'boolean'
+            'estado' => 'in:true,false'
         ]);
 
         $enrollment->update([
@@ -90,7 +90,7 @@ class EnrollmentController extends Controller
             'costo' => $request->costo,
             'estado_pago' => $request->estado_pago,
             'fecha' => $request->fecha,
-            'estado' => $request->boolean('estado', true)
+            'estado' => $request->estado === 'true' ? true : false
         ]);
 
         return redirect()->route('enrollments.index')
