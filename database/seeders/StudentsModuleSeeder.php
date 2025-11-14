@@ -36,27 +36,31 @@ class StudentsModuleSeeder extends Seeder
             } else {
                 // Crear la página como subpágina del módulo de usuarios
                 $pageType = PageType::where('type_name', 'Página')->first();
-                $studentsModule = Page::create([
-                    'page_name' => 'Estudiantes',
-                    'route' => 'students.index',
-                    'description' => 'Gestión de estudiantes',
-                    'id_page_type' => $pageType->id,
-                    'id_father_page' => $usersModule->id
-                ]);
+                // Crear o recuperar la página de Estudiantes (idempotente)
+                $studentsModule = Page::firstOrCreate(
+                    ['page_name' => 'Estudiantes'],
+                    [
+                        'route' => 'students.index',
+                        'description' => 'Gestión de estudiantes',
+                        'id_page_type' => $pageType->id,
+                        'id_father_page' => $usersModule->id
+                    ]
+                );
             }
 
             // Obtener el rol de SuperAdmin
             $superAdminRole = Role::where('rol_name', 'SuperAdministrador')->first();
 
-            // Obtener todos los permisos disponibles
-            $permissions = Permission::all();
+            // Obtener todos los permisos disponibles como ids (evita advertencias de tipado)
+            $permissionIds = Permission::pluck('id');
 
             // Asignar todos los permisos al SuperAdmin para el módulo de estudiantes
-            foreach ($permissions as $permission) {
-                RoleByPage::create([
+            foreach ($permissionIds as $permissionId) {
+                // Evitar duplicados de permisos por página
+                RoleByPage::firstOrCreate([
                     'id_role' => $superAdminRole->id,
                     'id_page' => $studentsModule->id,
-                    'id_permission' => $permission->id
+                    'id_permission' => $permissionId
                 ]);
             }
 
