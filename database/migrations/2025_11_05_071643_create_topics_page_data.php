@@ -43,6 +43,7 @@ return new class extends Migration
             $permissions = Permission::all();
             
             foreach ($permissions as $permission) {
+                /** @var Permission $permission */
                 RoleByPage::create([
                     'id_role' => $adminRole->id,
                     'id_page' => $page->id,
@@ -66,8 +67,11 @@ return new class extends Migration
 
         // Eliminar el tipo de página si no tiene otras páginas asociadas
         $pageType = PageType::where('type_name', 'Temas')->first();
-        if ($pageType && !$pageType->pages()->exists()) {
-            $pageType->delete();
+        if ($pageType) {
+            $hasPages = Page::where('id_page_type', $pageType->id)->exists();
+            if (!$hasPages) {
+                $pageType->delete();
+            }
         }
     }
 };

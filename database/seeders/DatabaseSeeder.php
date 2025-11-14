@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
         $this->call(GuardiansModuleSeeder::class);
         $this->call(StudentsModuleSeeder::class);
         $this->call(TopicsSeeder::class);
+        $this->call(EnrollmentTypeSeeder::class);
+        $this->call(GradeSeeder::class);
+        $this->call(SubjectSeeder::class);
+        $this->call(EnrollmentSeeder::class);
     }
     
 }

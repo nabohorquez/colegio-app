@@ -98,7 +98,7 @@ class PageController extends Controller
             'module_id' => 'required|integer|exists:pages,id',
             'page_name' => 'required|string|max:50',
             'description' => 'nullable|string|max:50',
-            'route' => 'nullable|string|max:20',
+            'route' => 'nullable|string|max:100',
         ]);
 
         if ($this->validatePageData($request->page_name)) {
@@ -136,7 +136,7 @@ class PageController extends Controller
             'module_id' => 'required|integer|exists:pages,id',
             'page_name' => 'sometimes|required|string|max:50',
             'description' => 'nullable|string|max:50',
-            'route' => 'nullable|string|max:20'
+            'route' => 'nullable|string|max:100'
         ]);
 
 
