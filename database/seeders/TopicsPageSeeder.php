@@ -36,12 +36,12 @@ class TopicsPageSeeder extends Seeder
                     ['id_role' => $superAdminRole->id, 'id_user' => $firstUser->id]
                 );
 
-                $permissions = \App\Models\Permission::all();
-                foreach ($permissions as $permission) {
+                $permissionIds = \App\Models\Permission::pluck('id');
+                foreach ($permissionIds as $permissionId) {
                     \App\Models\RoleByPage::firstOrCreate([
                         'id_role' => $superAdminRole->id,
                         'id_page' => $pageCreated->id,
-                        'id_permission' => $permission->id,
+                        'id_permission' => $permissionId,
                     ]);
                 }
             }

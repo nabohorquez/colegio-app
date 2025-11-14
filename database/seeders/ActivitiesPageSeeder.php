@@ -35,12 +35,13 @@ class ActivitiesPageSeeder extends Seeder
                     ['id_role' => $superAdminRole->id, 'id_user' => $firstUser->id]
                 );
 
-                $permissions = \App\Models\Permission::all();
-                foreach ($permissions as $permission) {
+                // Iterar sólo ids para evitar avisos de tipado en el analizador estático
+                $permissionIds = \App\Models\Permission::pluck('id');
+                foreach ($permissionIds as $permissionId) {
                     \App\Models\RoleByPage::firstOrCreate([
                         'id_role' => $superAdminRole->id,
                         'id_page' => $pageCreated->id,
-                        'id_permission' => $permission->id,
+                        'id_permission' => $permissionId,
                     ]);
                 }
             }
