@@ -1,8 +1,8 @@
-@extends('layouts.app')
 
-@section('title', 'Registro - Sistema Educativo')
 
-@section('content')
+<?php $__env->startSection('title', 'Registro - Sistema Educativo'); ?>
+
+<?php $__env->startSection('content'); ?>
     <div class="register-container">
         <!-- Left Panel - Informativo -->
         <div class="register-info-panel">
@@ -68,22 +68,22 @@
                     <p>Completa el formulario para comenzar</p>
                 </div>
 
-                @if ($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="register-alert register-alert-danger">
                         <i class="fas fa-exclamation-triangle"></i>
                         <div>
                             <strong>Error en el registro</strong>
                             <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li><?php echo e($error); ?></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                <form method="POST" action="{{ route('register') }}" class="register-form">
-                    @csrf
+                <form method="POST" action="<?php echo e(route('register')); ?>" class="register-form">
+                    <?php echo csrf_field(); ?>
 
                     <!-- Nombre -->
                     <div class="form-group-register">
@@ -94,15 +94,29 @@
                                 type="text" 
                                 id="name" 
                                 name="name" 
-                                value="{{ old('name') }}" 
+                                value="<?php echo e(old('name')); ?>" 
                                 required 
                                 placeholder="Juan Pérez"
-                                class="@error('name') input-error @enderror"
+                                class="<?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             >
                         </div>
-                        @error('name')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Email -->
@@ -114,15 +128,29 @@
                                 type="email" 
                                 id="email" 
                                 name="email" 
-                                value="{{ old('email') }}" 
+                                value="<?php echo e(old('email')); ?>" 
                                 required 
                                 placeholder="tu@email.com"
-                                class="@error('email') input-error @enderror"
+                                class="<?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             >
                         </div>
-                        @error('email')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Contraseña -->
@@ -136,15 +164,29 @@
                                 name="password" 
                                 required 
                                 placeholder="••••••••"
-                                class="@error('password') input-error @enderror"
+                                class="<?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             >
                         </div>
                         <div class="password-strength">
                             <div class="strength-bar"></div>
                         </div>
-                        @error('password')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Confirmar Contraseña -->
@@ -158,12 +200,26 @@
                                 name="password_confirmation" 
                                 required 
                                 placeholder="••••••••"
-                                class="@error('password_confirmation') input-error @enderror"
+                                class="<?php $__errorArgs = ['password_confirmation'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> input-error <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             >
                         </div>
-                        @error('password_confirmation')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['password_confirmation'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <button type="submit" class="btn-register-submit">
@@ -173,7 +229,7 @@
                 </form>
 
                 <div class="form-footer">
-                    <p>¿Ya tienes cuenta? <a href="{{ route('login') }}">Inicia sesión aquí</a></p>
+                    <p>¿Ya tienes cuenta? <a href="<?php echo e(route('login')); ?>">Inicia sesión aquí</a></p>
                 </div>
             </div>
         </div>
@@ -212,4 +268,6 @@
             return Math.min(strength, 100);
         }
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\colegio-app\resources\views/register/register.blade.php ENDPATH**/ ?>
