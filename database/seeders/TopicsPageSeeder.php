@@ -17,13 +17,16 @@ class TopicsPageSeeder extends Seeder
 
         $fatherPage = $pageModel::where('page_name', $fatherPageName)->first();
         if ($fatherPage) {
-            $pageCreated = $pageModel::create([
-                'page_name' => 'Gestión de Temas',
-                'route' => 'school.topics.index',
-                'id_page_type' => 2,
-                'description' => 'Gestión de temas académicos del colegio',
-                'id_father_page' => $fatherPage->id,
-            ]);
+            // Usar firstOrCreate para evitar duplicados si se corre el seeder varias veces
+            $pageCreated = $pageModel::firstOrCreate(
+                ['page_name' => 'Gestión de Temas'],
+                [
+                    'route' => 'school.topics.index',
+                    'id_page_type' => 2,
+                    'description' => 'Gestión de temas académicos del colegio',
+                    'id_father_page' => $fatherPage->id,
+                ]
+            );
 
             $superAdminRole = \App\Models\Role::where('rol_name', 'SuperAdministrador')->first();
             $firstUser = \App\Models\User::first();

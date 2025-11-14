@@ -29,13 +29,16 @@ class RolePage extends Seeder
         ];
 
         foreach ($pages as $pageData) {
-            $pageModel::create([
-                'page_name' => $pageData['page_name'],
-                'route' => $pageData['route'] ?? '',
-                'id_page_type' => $pageData['id_page_type'],
-                'description' => $pageData['description'],
-                'id_father_page' => $pageData['id_father_page'] ?? null,
-            ]);
+            // Usar firstOrCreate para evitar inserciones duplicadas en múltiples seeders/runs
+            $pageModel::firstOrCreate(
+                ['page_name' => $pageData['page_name']],
+                [
+                    'route' => $pageData['route'] ?? null,
+                    'id_page_type' => $pageData['id_page_type'],
+                    'description' => $pageData['description'],
+                    'id_father_page' => $pageData['id_father_page'] ?? null,
+                ]
+            );
         }
 
         $fatherPage = $pageModel::where('page_name', $fatherPageName)->first();
@@ -57,13 +60,15 @@ class RolePage extends Seeder
                 ],
             ];
             foreach ($subPages as $subPageData) {
-                $pageModel::create([
-                    'page_name' => $subPageData['page_name'],
-                    'route' => $subPageData['route'] ?? null,
-                    'id_page_type' => $subPageData['id_page_type'],
-                    'description' => $subPageData['description'],
-                    'id_father_page' => $subPageData['id_father_page'],
-                ]);
+                $pageModel::firstOrCreate(
+                    ['page_name' => $subPageData['page_name']],
+                    [
+                        'route' => $subPageData['route'] ?? null,
+                        'id_page_type' => $subPageData['id_page_type'],
+                        'description' => $subPageData['description'],
+                        'id_father_page' => $subPageData['id_father_page'],
+                    ]
+                );
             }
         }
     }
