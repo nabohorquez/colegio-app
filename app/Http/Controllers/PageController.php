@@ -193,4 +193,30 @@ class PageController extends Controller
             throw new NotFoundHttpException('La pagina no se encuentra');
         }
     }
+
+    public function getAllPagesByModules()
+    {
+        $modules = Page::where('id_page_type', 1)->get();
+        $allowedPages = Page::whereIn('id_page_type', [2, 3])->get();
+
+        $pages = $allowedPages->where('id_page_type', 2);
+        $components = $allowedPages->where('id_page_type', 3);
+
+        foreach ($modules as $module) {
+            $module->sub_pages = $pages
+                ->where('id_father_page', $module->id)
+                ->map(function($page) use ($components) {
+                    $page->components = $components
+                        ->where('id_father_page', $page->id)
+                        ->values()
+                        ->all();
+                    return $page;
+                })
+                ->values()
+                ->all();
+
+        }
+
+        return $modules;
+    }
 }
