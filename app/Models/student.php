@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Grade;
 
 class Student extends Model
 {
@@ -33,6 +34,14 @@ class Student extends Model
     public function guardian()
     {
         return $this->belongsTo(Guardian::class);
+    }
+
+    /**
+     * Relación: un estudiante tiene muchas calificaciones
+     */
+    public function grades()
+    {
+        return $this->hasMany(Grade::class);
     }
 
     /**

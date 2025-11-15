@@ -14,8 +14,17 @@ return new class extends Migration
             $table->integer('id')->autoIncrement();
             $table->string('title');
             $table->text('description')->nullable();
+
+            // Relaciones con Estudiante y Materia
+            $table->integer('student_id')->nullable();
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('set null');
+            $table->string('subject')->nullable();
+
             $table->integer('created_by');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+
+            $table->index('student_id');
+            $table->index('subject');
             $table->timestamps();
             $table->softDeletes(); // Para el borrado lógico
         });
@@ -27,7 +36,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->dropForeign(['created_by']);
+            $table->dropForeign(['created_by', 'student_id']);
         });
         Schema::dropIfExists('activities');
     }

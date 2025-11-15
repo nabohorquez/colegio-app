@@ -23,12 +23,12 @@ class TopicsSeeder extends Seeder
 
         $topics = [
             [
-                'title' => 'Matemáticas Básicas',
+                'title' => 'Matemáticas',
                 'description' => 'Fundamentos de aritmética, álgebra y geometría para el nivel básico.',
                 'created_by' => $adminUser->id,
             ],
             [
-                'title' => 'Lengua y Literatura',
+                'title' => 'Lengua Española',
                 'description' => 'Comprensión lectora, gramática y análisis literario.',
                 'created_by' => $adminUser->id,
             ],
@@ -38,17 +38,17 @@ class TopicsSeeder extends Seeder
                 'created_by' => $adminUser->id,
             ],
             [
-                'title' => 'Historia y Geografía',
+                'title' => 'Estudios Sociales',
                 'description' => 'Historia universal, nacional y geografía básica.',
                 'created_by' => $adminUser->id,
             ],
             [
-                'title' => 'Inglés Básico',
+                'title' => 'Inglés',
                 'description' => 'Vocabulario fundamental, gramática básica y conversación.',
                 'created_by' => $adminUser->id,
             ],
             [
-                'title' => 'Educación Artística',
+                'title' => 'Artes',
                 'description' => 'Expresión artística, música y manualidades.',
                 'created_by' => $adminUser->id,
             ],
@@ -58,14 +58,14 @@ class TopicsSeeder extends Seeder
                 'created_by' => $adminUser->id,
             ],
             [
-                'title' => 'Tecnología e Informática',
+                'title' => 'Informática',
                 'description' => 'Uso básico de computadoras y herramientas digitales.',
                 'created_by' => $adminUser->id,
             ],
         ];
 
         foreach ($topics as $topic) {
-            Topic::create($topic);
+            Topic::firstOrCreate(['title' => $topic['title']], $topic);
         }
 
         $this->command->info('Se han creado ' . count($topics) . ' temas de ejemplo.');

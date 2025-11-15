@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SchoolAdminPageSeeder::class);
         $this->call(TopicsPageSeeder::class);
         $this->call(ActivitiesPageSeeder::class);
+        $this->call(GradesPageSeeder::class);
 
         $this->call(EmployeesModuleSeeder::class);
         $this->call(GuardiansModuleSeeder::class);
@@ -32,6 +33,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call(TopicsSeeder::class);
         $this->call(ActivitiesSeeder::class);
+
+        // Seeders para datos de ejemplo
+        $this->call(SampleStudentsSeeder::class);
+        $this->call(SampleGradesSeeder::class);
     }
     
 }

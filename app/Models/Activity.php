@@ -13,13 +13,23 @@ class Activity extends Model
     protected $fillable = [
         'title',
         'description',
+        'student_id',
+        'subject',
         'resource_assignment',
         'example_assignment',
         'created_by'
     ];
 
     protected $dates = ['deleted_at'];
-
+    
+    /**
+     * Relación: Una actividad pertenece a un estudiante
+     */
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+    
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
