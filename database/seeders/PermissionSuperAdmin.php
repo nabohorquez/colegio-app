@@ -20,13 +20,14 @@ class PermissionSuperAdmin extends Seeder
             );
 
             $pages = \App\Models\Page::all();
-            $permissions = \App\Models\Permission::all();
-            foreach ($pages as $page) {
-                foreach ($permissions as $permission) {
+            $permissionIds = \App\Models\Permission::pluck('id');
+            /** @var \App\Models\Page $pageItem */
+            foreach ($pages as $pageItem) {
+                foreach ($permissionIds as $permissionId) {
                     \App\Models\RoleByPage::firstOrCreate([
                         'id_role' => $superAdminRole->id,
-                        'id_page' => $page->id,
-                        'id_permission' => $permission->id,
+                        'id_page' => $pageItem->id,
+                        'id_permission' => $permissionId,
                     ]);
                 }
             }
