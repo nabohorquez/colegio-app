@@ -24,6 +24,10 @@
                 <tr>
                     @if(in_array('edit', $permissions) || in_array('delete', $permissions))
                         <td class="d-flex justify-content-center">
+                            <a href="{{ route('school.grades.student', $student->id) }}" 
+                               class="btn btn-sm btn-info me-2" title="Ver Calificaciones">
+                                <i class="fas fa-chart-bar"></i>
+                            </a>
                             @if(in_array('edit', $permissions))
                                 <button class="btn btn-sm btn-warning me-2 btn-edit"
                                     data-id="{{ $student->id }}" title="Editar">

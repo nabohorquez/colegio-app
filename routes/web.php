@@ -11,6 +11,7 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TopicsController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\GradeController;
 
 // Ruta raíz redirige al login
 Route::get('/', function () {
@@ -120,7 +121,19 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
             Route::put('/{activity}', [ActivityController::class, 'update'])->name('update');
             Route::delete('/{activity}', [ActivityController::class, 'destroy'])->name('destroy');
         });
-    });
+
+            // Rutas de grades dentro de administración del colegio
+            Route::prefix('admin/grades')->name('grades.')->group(function () {
+                Route::get('/', [GradeController::class, 'index'])->name('index');
+                Route::get('/create', [GradeController::class, 'create'])->name('create');
+                Route::post('/', [GradeController::class, 'store'])->name('store');
+                Route::get('/student/{student}', [GradeController::class, 'studentGrades'])->name('student');
+                Route::get('/{grade}', [GradeController::class, 'show'])->name('show');
+                Route::get('/{grade}/edit', [GradeController::class, 'edit'])->name('edit');
+                Route::put('/{grade}', [GradeController::class, 'update'])->name('update');
+                Route::delete('/{grade}', [GradeController::class, 'destroy'])->name('destroy');
+            });
+        });
 
 
     

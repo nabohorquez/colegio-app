@@ -1,5 +1,33 @@
 @csrf
 <div class="mb-3">
+    <label for="student_id" class="form-label">Estudiante</label>
+    <select name="student_id" id="student_id" class="form-control @error('student_id') is-invalid @enderror">
+        <option value="">-- Actividad General (sin estudiante) --</option>
+        @foreach($students as $student)
+            <option value="{{ $student->id }}" 
+                {{ old('student_id', $activity->student_id ?? '') == $student->id ? 'selected' : '' }}>
+                {{ $student->full_name }} (Grado: {{ $student->grade }})
+            </option>
+        @endforeach
+    </select>
+    @error('student_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+
+<div class="mb-3">
+    <label for="subject" class="form-label">Asignatura</label>
+    <select name="subject" id="subject" class="form-control @error('subject') is-invalid @enderror">
+        <option value="">-- Selecciona una asignatura --</option>
+        @foreach($subjects as $subject)
+            <option value="{{ $subject }}" {{ old('subject', $activity->subject ?? '') == $subject ? 'selected' : '' }}>
+                {{ $subject }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
+<div class="mb-3">
     <label for="title" class="form-label">Título:</label>
     <input type="text" name="title" id="title" value="{{ old('title', $activity->title ?? '') }}" class="form-control @error('title') is-invalid @enderror" required>
     @error('title')

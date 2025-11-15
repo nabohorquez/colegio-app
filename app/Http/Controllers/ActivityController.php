@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Student;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +15,7 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        $activities = Activity::with("creator")->latest()->paginate(10);
+        $activities = Activity::with(["creator", "student"])->latest()->paginate(10);
         return view("school_admin.activities.index", compact("activities"));
     }
 
@@ -22,7 +24,10 @@ class ActivityController extends Controller
      */
     public function create()
     {
-        return view("school_admin.activities.create");
+        $students = Student::orderBy('first_name')->get();
+        $subjects = Topic::pluck('title');
+
+        return view("school_admin.activities.create", compact('students', 'subjects'));
     }
 
     /**
@@ -32,6 +37,8 @@ class ActivityController extends Controller
     {
         $request->validate([
             "title" => "required|string|max:255",
+            "student_id" => "nullable|exists:students,id",
+            "subject" => "nullable|string|max:255",
             "description" => "nullable|string",
             "resource_assignment" => "nullable|string",
             "example_assignment" => "nullable|string",
@@ -40,6 +47,8 @@ class ActivityController extends Controller
         Activity::create([
             "title" => $request->title,
             "description" => $request->description,
+            "student_id" => $request->student_id,
+            "subject" => $request->subject,
             "resource_assignment" => $request->resource_assignment,
             "example_assignment" => $request->example_assignment,
             "created_by" => Auth::id(),
@@ -62,7 +71,10 @@ class ActivityController extends Controller
      */
     public function edit(Activity $activity)
     {
-        return view("school_admin.activities.edit", compact("activity"));
+        $students = Student::orderBy('first_name')->get();
+        $subjects = Topic::pluck('title');
+
+        return view("school_admin.activities.edit", compact("activity", "students", "subjects"));
     }
 
     /**
@@ -72,6 +84,8 @@ class ActivityController extends Controller
     {
         $request->validate([
             "title" => "required|string|max:255",
+            "student_id" => "nullable|exists:students,id",
+            "subject" => "nullable|string|max:255",
             "description" => "nullable|string",
             "resource_assignment" => "nullable|string",
             "example_assignment" => "nullable|string",
