@@ -929,18 +929,39 @@
         /* ===== TABLES ===== */
         table {
             font-size: 14px;
+            overflow: hidden;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table-responsive {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .table {
+            margin-bottom: 0;
         }
 
         thead th {
-            background: var(--bg-secondary);
-            border-top: none;
-            border-bottom: 2px solid var(--border-color);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: none;
             font-weight: 700;
             color: var(--text-primary);
-            padding: 16px;
+            padding: 18px 16px;
             text-transform: uppercase;
             font-size: 12px;
             letter-spacing: 0.5px;
+        }
+
+        thead th:first-child {
+            border-radius: 16px 0 0 0;
+        }
+
+        thead th:last-child {
+            border-radius: 0 16px 0 0;
         }
 
         tbody td {
@@ -950,8 +971,25 @@
             color: var(--text-secondary);
         }
 
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:last-child td:first-child {
+            border-radius: 0 0 0 16px;
+        }
+
+        tbody tr:last-child td:last-child {
+            border-radius: 0 0 16px 0;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
         tbody tr:hover {
-            background: var(--bg-secondary);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            box-shadow: inset 0 2px 8px rgba(91, 91, 255, 0.05);
         }
 
         /* ===== UTILITIES ===== */
