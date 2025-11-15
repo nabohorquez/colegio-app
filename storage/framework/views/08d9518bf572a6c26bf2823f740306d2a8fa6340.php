@@ -11,7 +11,7 @@
                     <div class="school-logo">
                         <i class="fas fa-graduation-cap"></i>
                     </div>
-                    <h1>Mi Colegio</h1>
+                    <h1>AcademicSoftware</h1>
                     <p class="subtitle">Sistema de Gestión Educativa Integral</p>
                 </div>
 

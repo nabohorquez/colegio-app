@@ -7,7 +7,7 @@
 <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
     <div class="container-fluid px-4">
         <a class="navbar-brand" href="<?php echo e(route('dashboard')); ?>">
-            <i class="fas fa-school"></i>Mi Colegio
+            <i class="fas fa-school"></i>AcademicSoftware
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

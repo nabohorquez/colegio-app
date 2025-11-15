@@ -9,7 +9,7 @@
             <div class="info-content">
                 <div class="info-header">
                     <i class="fas fa-graduation-cap"></i>
-                    <h1>Mi Colegio</h1>
+                    <h1>AcademicSoftware</h1>
                 </div>
 
                 <div class="info-features">
