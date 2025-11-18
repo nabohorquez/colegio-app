@@ -3,27 +3,30 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Page;
 
-class PagePage extends Seeder
+class TopicsPageSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $pageModel = new \App\Models\Page();
-        $fatherPageName = 'Administración del Sistema';
+        $pageModel = new Page();
+        $fatherPageName = 'Administración del Colegio';
 
         $fatherPage = $pageModel::where('page_name', $fatherPageName)->first();
         if ($fatherPage) {
-            $pageCreated = $pageModel::create([
-                'page_name' => 'Gestión de Paginas',
-                'route' => 'pages.index',
-                'id_page_type' => 2,
-                'description' => 'Página para la gestión de paginas',
-                'id_father_page' => $fatherPage->id,
-            ]);
-
+            // Usar firstOrCreate para evitar duplicados si se corre el seeder varias veces
+            $pageCreated = $pageModel::firstOrCreate(
+                ['page_name' => 'Gestión de Temas'],
+                [
+                    'route' => 'school.topics.index',
+                    'id_page_type' => 2,
+                    'description' => 'Gestión de temas académicos del colegio',
+                    'id_father_page' => $fatherPage->id,
+                ]
+            );
 
             $superAdminRole = \App\Models\Role::where('rol_name', 'SuperAdministrador')->first();
             $firstUser = \App\Models\User::first();

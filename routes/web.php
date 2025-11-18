@@ -1,19 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreateUser;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\EnrollmentTypeController;
+use App\Http\Controllers\GradeController;
+use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\TopicsController;
-use App\Http\Controllers\EnrollmentTypeController;
-use App\Http\Controllers\EnrollmentController;
-use App\Http\Controllers\GradeController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TopicsController;
+use Illuminate\Support\Facades\Route;
 
 // Ruta raíz redirige al login
 Route::get('/', function () {
@@ -32,7 +33,6 @@ Route::post('/register', [CreateUser::class, 'register'])->name('register.post')
 // Rutas protegidas por autenticación
 Route::middleware(['auth', 'check.page.permissions'])->group(function () {
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
-    Route::get('/roles', [RoleController::class, 'getAll'])->name('roles.index');
     Route::get('/users', [RoleController::class, 'getAll'])->name('users.index');
 
     Route::prefix('modules')->name('modules.')->group(function () {
@@ -67,12 +67,11 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::get('/create', [EmployeeController::class, 'viewCreate'])->name('viewCreate');
         Route::post('/', [EmployeeController::class, 'create'])->name('create');
         Route::get('/{id}', [EmployeeController::class, 'getById'])->name('getById'); // ✅ para modal
-        Route::put('/{id}', [EmployeeController::class, 'update'])->name('update'); // ✅ AJAX update
+        Route::put('/{id}', [EmployeeController::class, 'update'])->name('update');   // ✅ AJAX update
         Route::delete('/{id}', [EmployeeController::class, 'delete'])->name('delete');
         Route::delete('/employees/{id}', [EmployeeController::class, 'delete'])->name('employees.delete');
 
     });
-
 
     Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::prefix('guardians')->name('guardians.')->group(function () {
@@ -92,6 +91,18 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
             Route::put('/{id}', [StudentController::class, 'update'])->name('update');
             Route::delete('/{id}', [StudentController::class, 'destroy'])->name('destroy');
         });
+    });
+
+    // Rutas de topics con comprobación de permisos
+    Route::resource('topics', TopicsController::class);
+
+    Route::prefix('roles')->name('roles.')->group(function () {
+        Route::get('/', [RoleController::class, 'getAll'])->name('index');
+        Route::get('/create', [RoleController::class, 'viewCreate'])->name('viewCreate');
+        Route::post('/', [RoleController::class, 'create'])->name('create');
+        Route::get('/{id}', [RoleController::class, 'getById'])->name('getById');
+        Route::put('/{id}', [RoleController::class, 'update'])->name('update');
+        Route::delete('/{id}', [RoleController::class, 'delete'])->name('delete');
     });
 
     // Rutas de Administración de Colegio
@@ -131,27 +142,44 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::delete('/{id}', [EnrollmentController::class, 'delete'])->name('delete');
     });
 
-
-
     // Rutas de administración de colegio
     Route::prefix('school')->name('school.')->group(function () {
-        Route::get('/admin', function() {
+        Route::get('/admin', function () {
             return view('school_admin.index');
         })->name('admin');
-    });
 
+        // Rutas de topics dentro de administración del colegio
+        Route::prefix('admin/topics')->name('topics.')->group(function () {
+            Route::get('/', [TopicsController::class, 'index'])->name('index');
+            Route::get('/create', [TopicsController::class, 'create'])->name('create');
+            Route::post('/', [TopicsController::class, 'store'])->name('store');
+            Route::get('/{topic}', [TopicsController::class, 'show'])->name('show');
+            Route::get('/{topic}/edit', [TopicsController::class, 'edit'])->name('edit');
+            Route::put('/{topic}', [TopicsController::class, 'update'])->name('update');
+            Route::delete('/{topic}', [TopicsController::class, 'destroy'])->name('destroy');
+        });
 
+        // Rutas de activities dentro de administración del colegio
+        Route::prefix('admin/activities')->name('activities.')->group(function () {
+            Route::get('/', [ActivityController::class, 'index'])->name('index');
+            Route::get('/create', [ActivityController::class, 'create'])->name('create');
+            Route::post('/', [ActivityController::class, 'store'])->name('store');
+            Route::get('/{activity}', [ActivityController::class, 'show'])->name('show');
+            Route::get('/{activity}/edit', [ActivityController::class, 'edit'])->name('edit');
+            Route::put('/{activity}', [ActivityController::class, 'update'])->name('update');
+            Route::delete('/{activity}', [ActivityController::class, 'destroy'])->name('destroy');
+        });
 
-    // Rutas de topics con comprobación de permisos
-    Route::resource('topics', TopicsController::class);
-
-
-    Route::prefix('roles')->name('roles.')->group(function () {
-        Route::get('/', [RoleController::class, 'getAll'])->name('index');
-        Route::get('/create', [RoleController::class, 'viewCreate'])->name('viewCreate');
-        Route::post('/', [RoleController::class, 'create'])->name('create');
-        Route::get('/{id}', [RoleController::class, 'getById'])->name('getById');
-        Route::put('/{id}', [RoleController::class, 'update'])->name('update');
-        Route::delete('/{id}', [RoleController::class, 'delete'])->name('delete');
+        // Rutas de grades dentro de administración del colegio
+        Route::prefix('admin/grades')->name('grades.')->group(function () {
+            Route::get('/', [GradeController::class, 'index'])->name('index');
+            Route::get('/create', [GradeController::class, 'create'])->name('create');
+            Route::post('/', [GradeController::class, 'store'])->name('store');
+            Route::get('/student/{student}', [GradeController::class, 'studentGrades'])->name('student');
+            Route::get('/{grade}', [GradeController::class, 'show'])->name('show');
+            Route::get('/{grade}/edit', [GradeController::class, 'edit'])->name('edit');
+            Route::put('/{grade}', [GradeController::class, 'update'])->name('update');
+            Route::delete('/{grade}', [GradeController::class, 'destroy'])->name('destroy');
+        });
     });
 });

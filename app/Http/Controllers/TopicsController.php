@@ -32,7 +32,7 @@ class TopicsController extends Controller
             'created_by' => Auth::id(),
         ]);
 
-        return redirect()->route('topics.index')
+        return redirect()->route('school.topics.index')
             ->with('success', 'Topic created successfully.');
     }
 
@@ -58,14 +58,14 @@ class TopicsController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('topics.index')
+        return redirect()->route('school.topics.index')
             ->with('success', 'Topic updated successfully.');
     }
 
     public function destroy(Topic $topic)
     {
         $topic->delete();
-        return redirect()->route('topics.index')
+        return redirect()->route('school.topics.index')
             ->with('success', 'Topic deleted successfully.');
     }
 }
