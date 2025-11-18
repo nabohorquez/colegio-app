@@ -4,60 +4,44 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Grade extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+
+    protected $table = 'grades';
 
     protected $fillable = [
-        'student_id',
-        'subject',
-        'academic_period',
-        'first_partial',
-        'second_partial',
-        'final_grade',
-        'notes',
-        'created_by',
+        'nombre_grado',
+        'nivel',
+        'estado'
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $casts = [
+        'estado' => 'boolean'
+    ];
 
     /**
-     * Relationship: A grade belongs to a student
+     * Relación: Un grado tiene muchas matrículas
      */
-    public function student()
+    public function enrollments()
     {
-        return $this->belongsTo(Student::class);
+        return $this->hasMany(Enrollment::class, 'grado_id', 'id');
     }
 
     /**
-     * Relationship: A grade is created by a user (teacher/admin)
+     * Relación: Un grado tiene muchos estudiantes
      */
-    public function creator()
+    public function students()
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->hasMany(Student::class, 'grade_id', 'id');
     }
 
     /**
-     * Accessor: Calculate average partial grade
+     * Relación: Un grado tiene muchas materias
      */
-    public function getAveragePartialAttribute()
+    public function subjects()
     {
-        if ($this->first_partial && $this->second_partial) {
-            return round(($this->first_partial + $this->second_partial) / 2, 2);
-        }
-        return null;
-    }
-
-    /**
-     * Accessor: Determine if student passed
-     */
-    public function getStatusAttribute()
-    {
-        if ($this->final_grade === null) {
-            return 'pending';
-        }
-        return $this->final_grade >= 3 ? 'passed' : 'failed';
+        return $this->belongsToMany(Subject::class, 'grade_subject', 'grado_id', 'materia_id');
     }
 }

@@ -1,81 +1,95 @@
 @extends('layouts.app')
 
-@section('title', 'Iniciar Sesión - LoginAcademicSoftware')
+@section('title', 'Iniciar Sesión - Sistema Escolar')
 
 @section('content')
-    <div class="login-container d-flex align-items-center justify-content-center">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4">
-                    <div class="login-card p-4">
-                        <div class="text-center mb-4">
-                            <i class="fas fa-file-invoice-dollar fa-3x text-primary mb-3"></i>
-                            <h3 class="fw-bold text-dark">LoginAcademicSoftware</h3>
-                            <p class="text-muted">Inicia sesión en tu cuenta</p>
-                        </div>
-
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        <form method="POST" action="{{ route('login.post') }}">
-                            @csrf
-
-                            <div class="mb-3">
-                                <label for="email" class="form-label">
-                                    <i class="fas fa-envelope me-1"></i>Correo electrónico
-                                </label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                    id="email" name="email" value="{{ old('email') }}" required autocomplete="email"
-                                    autofocus placeholder="Ingresa tu correo">
-                                @error('email')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="password" class="form-label">
-                                    <i class="fas fa-lock me-1"></i>Contraseña
-                                </label>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                    id="password" name="password" required autocomplete="current-password"
-                                    placeholder="Ingresa tu contraseña">
-                                @error('password')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                                <label class="form-check-label" for="remember">
-                                    Recordarme
-                                </label>
-                            </div>
-
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-sign-in-alt me-1"></i>Iniciar Sesión
-                                </button>
-                            </div>
-                        </form>
-
-                        <div class="text-center mt-4">
-                            <small class="text-muted">
-                                ¿No tienes una cuenta?
-                                <a href="{{ route('register') }}" class="text-decoration-none">Regístrate aquí</a>
-                            </small>
-                        </div>
+    <div class="login-container">
+        <div class="login-wrapper">
+            <div class="login-card">
+                <!-- Header -->
+                <div class="login-header">
+                    <div class="school-logo">
+                        <i class="fas fa-graduation-cap"></i>
                     </div>
+                    <h1>AcademicSoftware</h1>
+                    <p class="subtitle">Sistema de Gestión Educativa Integral</p>
+                </div>
+
+                <!-- Errors -->
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i><strong>Error de autenticación</strong>
+                        <ul class="mb-0 mt-2">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
+
+                <!-- Form -->
+                <form method="POST" action="{{ route('login.post') }}" class="login-form">
+                    @csrf
+
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope me-2"></i>Correo Electrónico
+                        </label>
+                        <input 
+                            type="email" 
+                            class="form-control @error('email') is-invalid @enderror"
+                            id="email" 
+                            name="email" 
+                            value="{{ old('email') }}" 
+                            required 
+                            autocomplete="email"
+                            autofocus
+                            placeholder="tu@colegio.com"
+                        >
+                        @error('email')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock me-2"></i>Contraseña
+                        </label>
+                        <input 
+                            type="password" 
+                            class="form-control @error('password') is-invalid @enderror"
+                            id="password" 
+                            name="password" 
+                            required 
+                            autocomplete="current-password"
+                            placeholder="••••••••"
+                        >
+                        @error('password')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-check">
+                        <input 
+                            type="checkbox" 
+                            class="form-check-input" 
+                            id="remember" 
+                            name="remember"
+                        >
+                        <label class="form-check-label" for="remember">
+                            <i class="fas fa-check me-1"></i>Recordarme en este navegador
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                    </button>
+                </form>
+
+                <!-- Footer -->
+                <div class="login-footer">
+                    <p>¿No tienes cuenta? <a href="{{ route('register') }}"><i class="fas fa-user-plus me-1"></i>Solicita una aquí</a></p>
                 </div>
             </div>
         </div>

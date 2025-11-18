@@ -1,95 +1,215 @@
 @extends('layouts.app')
 
-@section('title', 'Registro - AcademicSoftware')
+@section('title', 'Registro - Sistema Educativo')
 
 @section('content')
-    <div class="login-container d-flex align-items-center justify-content-center">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4">
-                    <div class="login-card p-4">
-                        <div class="text-center mb-4">
-                            <i class="fas fa-file-invoice-dollar fa-3x text-primary mb-3"></i>
-                            <h3 class="fw-bold text-dark">AcademicSoftware</h3>
-                            <p class="text-muted">Registrar usuario</p>
+    <div class="register-container">
+        <!-- Left Panel - Informativo -->
+        <div class="register-info-panel">
+            <div class="info-content">
+                <div class="info-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>AcademicSoftware</h1>
+                </div>
+
+                <div class="info-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-book"></i>
                         </div>
-
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        <form method="POST" action="{{ route('register') }}">
-                            @csrf
-
-                            <div class="mb-3">
-                                <label for="name" class="form-label">
-                                    <i class="fas fa-user me-1"></i>Nombre
-                                </label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    id="name" name="name" value="{{ old('name') }}" required autocomplete="name"
-                                    autofocus placeholder="Ingresa tu nombre">
-                                @error('name')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="email" class="form-label">
-                                    <i class="fas fa-envelope me-1"></i>Correo electrónico
-                                </label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                    id="email" name="email" value="{{ old('email') }}" required autocomplete="email"
-                                    autofocus placeholder="Ingresa tu correo">
-                                @error('email')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="password" class="form-label">
-                                    <i class="fas fa-lock me-1"></i>Contraseña
-                                </label>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                    id="password" name="password" required autocomplete="new-password"
-                                    placeholder="Ingresa tu contraseña">
-                                @error('password')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                                <label for="password_confirmation" class="form-label">
-                                    <i class="fas fa-lock me-1"></i>Repetir Contraseña
-                                </label>
-                                <input type="password"
-                                    class="form-control @error('password_confirmation') is-invalid @enderror"
-                                    id="password_confirmation" name="password_confirmation" required
-                                    autocomplete="new-password" placeholder="Repite tu contraseña">
-                                @error('password_confirmation')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-user-plus me-1"></i>Registrarse
-                                </button>
-                            </div>
-                        </form>
+                        <div class="feature-text">
+                            <h4>Gestión Académica</h4>
+                            <p>Control completo de calificaciones y notas</p>
+                        </div>
                     </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Reportes Inteligentes</h4>
+                            <p>Análisis detallado del desempeño estudiantil</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Comunicación Efectiva</h4>
+                            <p>Conecta padres, estudiantes y maestros</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>Seguridad Garantizada</h4>
+                            <p>Tus datos protegidos con tecnología avanzada</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-footer">
+                    <p>Únete a la revolución educativa digital</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Formulario -->
+        <div class="register-form-panel">
+            <div class="form-wrapper">
+                <div class="form-header">
+                    <h2>Crear Cuenta</h2>
+                    <p>Completa el formulario para comenzar</p>
+                </div>
+
+                @if ($errors->any())
+                    <div class="register-alert register-alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <strong>Error en el registro</strong>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('register') }}" class="register-form">
+                    @csrf
+
+                    <!-- Nombre -->
+                    <div class="form-group-register">
+                        <label for="name">Nombre Completo</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                name="name" 
+                                value="{{ old('name') }}" 
+                                required 
+                                placeholder="Juan Pérez"
+                                class="@error('name') input-error @enderror"
+                            >
+                        </div>
+                        @error('name')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group-register">
+                        <label for="email">Correo Electrónico</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                value="{{ old('email') }}" 
+                                required 
+                                placeholder="tu@email.com"
+                                class="@error('email') input-error @enderror"
+                            >
+                        </div>
+                        @error('email')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="form-group-register">
+                        <label for="password">Contraseña</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                placeholder="••••••••"
+                                class="@error('password') input-error @enderror"
+                            >
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-bar"></div>
+                        </div>
+                        @error('password')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <!-- Confirmar Contraseña -->
+                    <div class="form-group-register">
+                        <label for="password_confirmation">Confirmar Contraseña</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input 
+                                type="password" 
+                                id="password_confirmation" 
+                                name="password_confirmation" 
+                                required 
+                                placeholder="••••••••"
+                                class="@error('password_confirmation') input-error @enderror"
+                            >
+                        </div>
+                        @error('password_confirmation')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <button type="submit" class="btn-register-submit">
+                        <span>Crear Cuenta</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="form-footer">
+                    <p>¿Ya tienes cuenta? <a href="{{ route('login') }}">Inicia sesión aquí</a></p>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.querySelector('.strength-bar');
+
+        if (passwordInput) {
+            passwordInput.addEventListener('input', function() {
+                const strength = calculatePasswordStrength(this.value);
+                strengthBar.style.width = strength + '%';
+                
+                if (strength < 33) {
+                    strengthBar.style.backgroundColor = '#ef4444';
+                } else if (strength < 66) {
+                    strengthBar.style.backgroundColor = '#f59e0b';
+                } else {
+                    strengthBar.style.backgroundColor = '#10b981';
+                }
+            });
+        }
+
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+            
+            if (password.length >= 8) strength += 25;
+            if (password.length >= 12) strength += 10;
+            if (/[a-z]/.test(password)) strength += 15;
+            if (/[A-Z]/.test(password)) strength += 15;
+            if (/[0-9]/.test(password)) strength += 15;
+            if (/[^a-zA-Z0-9]/.test(password)) strength += 20;
+            
+            return Math.min(strength, 100);
+        }
+    </script>
 @endsection

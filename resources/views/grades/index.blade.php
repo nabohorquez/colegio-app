@@ -1,0 +1,80 @@
+@extends('layouts.app-menu')
+
+@section('title', 'Grados - Sistema Escolar')
+
+@section('content-principal')
+    <div class="d-flex justify-content-between align-items-center welcome-header">
+        <div>
+            <h1>Grados</h1>
+            <p>Gestiona los grados disponibles</p>
+        </div>
+        <a href="{{ route('grades.viewCreate') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Nuevo Grado
+        </a>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    <div class="section-card">
+        <div class="card-body">
+            @if($grades->count() > 0)
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Nivel</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($grades as $grade)
+                                <tr>
+                                    <td><strong>{{ $grade->nombre_grado }}</strong></td>
+                                    <td>{{ $grade->nivel }}</td>
+                                    <td>
+                                        <span class="badge {{ $grade->estado ? 'bg-success' : 'bg-secondary' }}">
+                                            {{ $grade->estado ? 'Activo' : 'Inactivo' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ route('grades.getById', $grade->id) }}" class="btn btn-outline-primary" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('grades.delete', $grade->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger" title="Eliminar" onclick="return confirm('¿Eliminar este grado?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="text-center py-5">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3" style="display: block;"></i>
+                    <p class="text-muted">No hay grados registrados</p>
+                </div>
+            @endif
+        </div>
+    </div>
+@endsection

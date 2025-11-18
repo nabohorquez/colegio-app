@@ -37,6 +37,10 @@ class DatabaseSeeder extends Seeder
         // Seeders para datos de ejemplo
         $this->call(SampleStudentsSeeder::class);
         $this->call(SampleGradesSeeder::class);
+        $this->call(EnrollmentTypeSeeder::class);
+        $this->call(GradeSeeder::class);
+        $this->call(SubjectSeeder::class);
+        $this->call(EnrollmentSeeder::class);
     }
     
 }

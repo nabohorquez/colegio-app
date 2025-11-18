@@ -3,148 +3,81 @@
 namespace App\Http\Controllers;
 
 use App\Models\Grade;
-use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GradeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function getAll()
     {
-        $students = Student::with('grades')->orderBy('first_name')->get();
-        return view('school_admin.grades.index', compact('students'));
+        return view('grades.index', ['grades' => Grade::all()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function getById($id)
+    {
+        $grade = $this->getGradeById($id);
+        return view('grades.form', ['grade' => $grade]);
+    }
+
+    public function viewCreate()
+    {
+        return view('grades.form', ['grade' => null]);
+    }
+
     public function create(Request $request)
     {
-        $students = Student::orderBy('first_name')->get();
-        $academicPeriods = ['2025-I', '2025-II', '2026-I', '2026-II'];
-        $subjects = [
-            'Matemáticas',
-            'Lengua Española',
-            'Inglés',
-            'Ciencias Naturales',
-            'Estudios Sociales',
-            'Educación Física',
-            'Artes',
-            'Informática',
-        ];
-
-        // Pre-select student if provided in query string
-        $selectedStudent = $request->query('student_id');
-
-        return view('school_admin.grades.create', compact('students', 'academicPeriods', 'subjects', 'selectedStudent'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
         $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'subject' => 'required|string|max:255',
-            'academic_period' => 'required|string|max:50',
-            'first_partial' => 'nullable|numeric|min:0|max:5',
-            'second_partial' => 'nullable|numeric|min:0|max:5',
-            'final_grade' => 'nullable|numeric|min:0|max:5',
-            'notes' => 'nullable|string',
+            'nombre_grado' => 'required|string|max:255|unique:grades',
+            'nivel' => 'required|string|max:100',
+            'estado' => 'in:true,false'
         ]);
 
-        Grade::create([
-            'student_id' => $request->student_id,
-            'subject' => $request->subject,
-            'academic_period' => $request->academic_period,
-            'first_partial' => $request->first_partial,
-            'second_partial' => $request->second_partial,
-            'final_grade' => $request->final_grade,
-            'notes' => $request->notes,
-            'created_by' => Auth::id(),
+        $grade = Grade::create([
+            'nombre_grado' => $request->nombre_grado,
+            'nivel' => $request->nivel,
+            'estado' => $request->estado === 'true' ? true : false
         ]);
 
-        return redirect()->route('school.grades.index')
-            ->with('success', 'Grade assigned successfully to the student.');
+        return redirect()->route('grades.index')
+            ->with('success', 'Grado creado correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Grade $grade)
+    public function update(Request $request, $id)
     {
-        $grade->load(['student', 'creator']);
-        return view('school_admin.grades.show', compact('grade'));
-    }
+        $grade = $this->getGradeById($id);
 
-    /**
-     * Display all grades for a specific student.
-     */
-    public function studentGrades(Student $student)
-    {
-        $grades = Grade::where('student_id', $student->id)
-                       ->with(['creator'])
-                       ->latest('academic_period')
-                       ->get()
-                       ->groupBy('academic_period');
-
-        return view('school_admin.grades.student-grades', compact('student', 'grades'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Grade $grade)
-    {
-        $students = Student::orderBy('first_name')->get();
-        $academicPeriods = ['2025-I', '2025-II', '2026-I', '2026-II'];
-        $subjects = [
-            'Matemáticas',
-            'Lengua Española',
-            'Inglés',
-            'Ciencias Naturales',
-            'Estudios Sociales',
-            'Educación Física',
-            'Artes',
-            'Informática',
-        ];
-
-        return view('school_admin.grades.edit', compact('grade', 'students', 'academicPeriods', 'subjects'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Grade $grade)
-    {
         $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'subject' => 'required|string|max:255',
-            'academic_period' => 'required|string|max:50',
-            'first_partial' => 'nullable|numeric|min:0|max:5',
-            'second_partial' => 'nullable|numeric|min:0|max:5',
-            'final_grade' => 'nullable|numeric|min:0|max:5',
-            'notes' => 'nullable|string',
+            'nombre_grado' => "required|string|max:255|unique:grades,nombre_grado,{$id}",
+            'nivel' => 'required|string|max:100',
+            'estado' => 'in:true,false'
         ]);
 
-        $grade->update($request->all());
+        $grade->update([
+            'nombre_grado' => $request->nombre_grado,
+            'nivel' => $request->nivel,
+            'estado' => $request->estado === 'true' ? true : false
+        ]);
 
-        return redirect()->route('school.grades.index')
-            ->with('success', 'Grade updated successfully.');
+        return redirect()->route('grades.index')
+            ->with('success', 'Grado actualizado correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Grade $grade)
+    public function delete($id)
     {
+        $grade = $this->getGradeById($id);
         $grade->delete();
 
-        return redirect()->route('school.grades.index')
-            ->with('success', 'Grade removed successfully.');
+        return redirect()->route('grades.index')
+            ->with('success', 'Grado eliminado correctamente');
+    }
+
+    private function getGradeById(int $id)
+    {
+        $grade = Grade::find($id);
+        if ($grade) {
+            return $grade;
+        } else {
+            throw new NotFoundHttpException('El grado no se encuentra');
+        }
     }
 }
