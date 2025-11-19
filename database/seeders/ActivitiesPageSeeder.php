@@ -20,7 +20,7 @@ class ActivitiesPageSeeder extends Seeder
             $pageCreated = $pageModel::firstOrCreate(
                 ['page_name' => 'Actividades'],
                 [
-                    'route' => 'school.activities.index',
+                    'route' => 'activities.index',
                     'id_page_type' => 2,
                     'description' => 'Gestión de actividades escolares del colegio',
                     'id_father_page' => $fatherPage->id,
