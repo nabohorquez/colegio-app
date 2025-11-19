@@ -766,6 +766,19 @@
             color: #1f2937 !important;
         }
 
+        /* Text color utilities for dark mode */
+        body.dark-mode .text-muted {
+            color: #94a3b8 !important;
+        }
+
+        body.dark-mode .text-secondary {
+            color: #cbd5e1 !important;
+        }
+
+        body.dark-mode .text-tertiary {
+            color: #94a3b8 !important;
+        }
+
         /* ===== NAVBAR ===== */
         .navbar {
             background: var(--card-bg) !important;

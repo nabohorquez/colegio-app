@@ -11,7 +11,9 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentGradesController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicsController;
 use Illuminate\Support\Facades\Route;
@@ -163,14 +165,14 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
 
     // Rutas de calificaciones/notas del estudiante (hijo de Administración de Colegio)
     Route::prefix('student-grades')->name('student-grades.')->group(function () {
-        Route::get('/', [GradeController::class, 'index'])->name('index');
-        Route::get('/create', [GradeController::class, 'create'])->name('create');
-        Route::post('/', [GradeController::class, 'store'])->name('store');
-        Route::get('/student/{student}', [GradeController::class, 'studentGrades'])->name('student');
-        Route::get('/{grade}', [GradeController::class, 'show'])->name('show');
-        Route::get('/{grade}/edit', [GradeController::class, 'edit'])->name('edit');
-        Route::put('/{grade}', [GradeController::class, 'update'])->name('update');
-        Route::delete('/{grade}', [GradeController::class, 'destroy'])->name('destroy');
+        Route::get('/', [StudentGradesController::class, 'index'])->name('index');
+        Route::get('/create', [StudentGradesController::class, 'create'])->name('create');
+        Route::post('/', [StudentGradesController::class, 'store'])->name('store');
+        Route::get('/student/{student}', [StudentGradesController::class, 'byStudent'])->name('by_student');
+        Route::get('/{id}', [StudentGradesController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [StudentGradesController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [StudentGradesController::class, 'update'])->name('update');
+        Route::delete('/{id}', [StudentGradesController::class, 'destroy'])->name('destroy');
     });
 
     // Rutas de administración de colegio
