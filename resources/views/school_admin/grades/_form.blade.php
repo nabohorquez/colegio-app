@@ -17,34 +17,16 @@
     </div>
 
     <div class="col-md-6 mb-3">
-        <label for="subject" class="form-label">Asignatura <span class="text-danger">*</span></label>
-        <select name="subject" id="subject" class="form-control @error('subject') is-invalid @enderror" required>
+        <label for="subject_id" class="form-label">Asignatura <span class="text-danger">*</span></label>
+        <select name="subject_id" id="subject_id" class="form-control @error('subject_id') is-invalid @enderror" required>
             <option value="">-- Selecciona una asignatura --</option>
             @foreach($subjects as $subject)
-                <option value="{{ $subject }}" {{ old('subject', $grade->subject ?? '') == $subject ? 'selected' : '' }}>
-                    {{ $subject }}
-                </option>
-            @endforeach
-            <option value="" {{ old('subject', $grade->subject ?? '') === '' ? 'selected' : '' }}>-- Otra --</option>
-        </select>
-        @error('subject')
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <label for="academic_period" class="form-label">Período Académico <span class="text-danger">*</span></label>
-        <select name="academic_period" id="academic_period" class="form-control @error('academic_period') is-invalid @enderror" required>
-            <option value="">-- Selecciona un período --</option>
-            @foreach($academicPeriods as $period)
-                <option value="{{ $period }}" {{ old('academic_period', $grade->academic_period ?? '') == $period ? 'selected' : '' }}>
-                    {{ $period }}
+                <option value="{{ $subject->id }}" {{ old('subject_id', $grade->subject_id ?? '') == $subject->id ? 'selected' : '' }}>
+                    {{ $subject->nombre_materia }}
                 </option>
             @endforeach
         </select>
-        @error('academic_period')
+        @error('subject_id')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
@@ -57,33 +39,33 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-4 mb-3">
-                <label for="first_partial" class="form-label">Calificación 1er Parcial</label>
-                <input type="number" name="first_partial" id="first_partial" step="0.01" min="0" max="5" 
-                    value="{{ old('first_partial', $grade->first_partial ?? '') }}" 
-                    class="form-control @error('first_partial') is-invalid @enderror"
-                    placeholder="0.00">
-                @error('first_partial')
+                <label for="partial_1" class="form-label">Calificación 1er Parcial</label>
+                <input type="number" name="partial_1" id="partial_1" step="0.1" min="0" max="5" 
+                    value="{{ old('partial_1', $grade->partial_1 ?? '') }}" 
+                    class="form-control @error('partial_1') is-invalid @enderror"
+                    placeholder="0.0">
+                @error('partial_1')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="col-md-4 mb-3">
-                <label for="second_partial" class="form-label">Calificación 2do Parcial</label>
-                <input type="number" name="second_partial" id="second_partial" step="0.01" min="0" max="5" 
-                    value="{{ old('second_partial', $grade->second_partial ?? '') }}" 
-                    class="form-control @error('second_partial') is-invalid @enderror"
-                    placeholder="0.00">
-                @error('second_partial')
+                <label for="partial_2" class="form-label">Calificación 2do Parcial</label>
+                <input type="number" name="partial_2" id="partial_2" step="0.1" min="0" max="5" 
+                    value="{{ old('partial_2', $grade->partial_2 ?? '') }}" 
+                    class="form-control @error('partial_2') is-invalid @enderror"
+                    placeholder="0.0">
+                @error('partial_2')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="col-md-4 mb-3">
                 <label for="final_grade" class="form-label">Calificación Final</label>
-                <input type="number" name="final_grade" id="final_grade" step="0.01" min="0" max="5" 
+                <input type="number" name="final_grade" id="final_grade" step="0.1" min="0" max="5" 
                     value="{{ old('final_grade', $grade->final_grade ?? '') }}" 
                     class="form-control @error('final_grade') is-invalid @enderror"
-                    placeholder="0.00">
+                    placeholder="0.0">
                 @error('final_grade')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -93,10 +75,10 @@
 </div>
 
 <div class="mb-3">
-    <label for="notes" class="form-label">Observaciones/Comentarios</label>
-    <textarea name="notes" id="notes" rows="4" class="form-control @error('notes') is-invalid @enderror"
-        placeholder="Agrega notas o observaciones adicionales sobre el desempeño del estudiante">{{ old('notes', $grade->notes ?? '') }}</textarea>
-    @error('notes')
+    <label for="observations" class="form-label">Observaciones/Comentarios</label>
+    <textarea name="observations" id="observations" rows="4" class="form-control @error('observations') is-invalid @enderror"
+        placeholder="Agrega notas o observaciones adicionales sobre el desempeño del estudiante">{{ old('observations', $grade->observations ?? '') }}</textarea>
+    @error('observations')
         <div class="invalid-feedback">{{ $message }}</div>
     @enderror
 </div>
