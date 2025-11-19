@@ -9,10 +9,10 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="mb-0">Detalles de Calificación</h3>
                     <div>
-                        <a href="{{ route('school.grades.edit', $grade->id) }}" class="btn btn-warning btn-sm">
+                        <a href="{{ route('student-grades.edit', $grade->id) }}" class="btn btn-warning btn-sm">
                             <i class="fas fa-edit"></i> Editar
                         </a>
-                        <a href="{{ route('school.grades.index') }}" class="btn btn-secondary btn-sm">
+                        <a href="{{ route('student-grades.index') }}" class="btn btn-secondary btn-sm">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
                     </div>

@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="mb-0"><i class="fas fa-graduation-cap"></i> Gestión de Calificaciones</h3>
-                    <a href="{{ route('school.grades.create') }}" class="btn btn-primary">
+                    <a href="{{ route('student-grades.create') }}" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Asignar Nueva Calificación
                     </a>
                 </div>
@@ -85,10 +85,10 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="d-flex gap-1 mt-2">
-                                                                        <a href="{{ route('school.grades.edit', $grade->id) }}" class="btn btn-sm btn-warning flex-grow-1" title="Editar Calificación">
+                                                                        <a href="{{ route('student-grades.edit', $grade->id) }}" class="btn btn-sm btn-warning flex-grow-1" title="Editar Calificación">
                                                                             <i class="fas fa-edit"></i> Editar
                                                                         </a>
-                                                                        <form action="{{ route('school.grades.destroy', $grade->id) }}" method="POST" class="d-inline flex-grow-1" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta calificación de {{ $grade->subject }}?');">
+                                                                        <form action="{{ route('student-grades.destroy', $grade->id) }}" method="POST" class="d-inline flex-grow-1" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta calificación de {{ $grade->subject }}?');">
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button type="submit" class="btn btn-sm btn-danger w-100" title="Eliminar">
@@ -112,7 +112,7 @@
                                     </div>
                                 @endif
                                 <div class="card-footer bg-light">
-                                    <a href="{{ route('school.grades.create', ['student_id' => $student->id]) }}" 
+                                    <a href="{{ route('student-grades.create', ['student_id' => $student->id]) }}" 
                                        class="btn btn-sm btn-primary w-100">
                                         <i class="fas fa-plus"></i> Agregar Calificación
                                     </a>

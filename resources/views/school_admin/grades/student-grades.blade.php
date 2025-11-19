@@ -11,7 +11,7 @@
                         <h3 class="mb-0">Calificaciones de {{ $student->full_name }}</h3>
                         <small class="text-muted">Grado: {{ $student->grade }} | Correo: {{ $student->institutional_email }}</small>
                     </div>
-                    <a href="{{ route('school.grades.index') }}" class="btn btn-secondary btn-sm">
+                    <a href="{{ route('student-grades.index') }}" class="btn btn-secondary btn-sm">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>
@@ -80,11 +80,11 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="btn-group btn-group-sm" role="group">
-                                                        <a href="{{ route('school.grades.show', $grade->id) }}" 
+                                                        <a href="{{ route('student-grades.show', $grade->id) }}" 
                                                            class="btn btn-info btn-sm" title="Ver detalles">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
-                                                        <a href="{{ route('school.grades.edit', $grade->id) }}" 
+                                                        <a href="{{ route('student-grades.edit', $grade->id) }}" 
                                                            class="btn btn-warning btn-sm" title="Editar">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
@@ -121,7 +121,7 @@
     <script>
         function confirmDelete(gradeId, subject) {
             if (confirm(`¿Estás seguro de que deseas eliminar la calificación de ${subject}?`)) {
-                document.getElementById('deleteForm').action = `{{ route('school.grades.destroy', '') }}/${gradeId}`;
+                document.getElementById('deleteForm').action = `{{ route('student-grades.destroy', '') }}/${gradeId}`;
                 document.getElementById('deleteForm').submit();
             }
         }
