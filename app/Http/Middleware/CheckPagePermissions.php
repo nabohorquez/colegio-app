@@ -14,6 +14,9 @@ class CheckPagePermissions
         $user = Auth::user();
 
         if (!$user) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'No autenticado'], 401);
+            }
             return redirect('/login')->with('error', 'Debes iniciar sesión para acceder.');
         }
 
@@ -21,6 +24,9 @@ class CheckPagePermissions
 
         // Si no hay nombre de ruta, no intentamos resolver permisos (evita pasar null a Str::before)
         if (!$routeName) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Sin permisos'], 403);
+            }
             return redirect('/dashboard')->with('error', 'No tienes permisos para acceder a esta sección.');
         }
 
@@ -28,6 +34,9 @@ class CheckPagePermissions
         $permissions = (new RoleController())->getPermissionsPageByRoleId($user->id, $moduleName);
 
         if (empty($permissions)) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Sin permisos para este módulo'], 403);
+            }
             return redirect('/dashboard')->with('error', 'No tienes permisos para acceder a esta sección.');
         }
 

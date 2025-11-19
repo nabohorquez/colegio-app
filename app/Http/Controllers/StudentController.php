@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Models\Guardian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class StudentController extends Controller
@@ -43,14 +44,18 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'first_name'  => 'required|string|max:120',
-            'last_name'   => 'required|string|max:120',
-            'birth_date'  => 'nullable|date',
-            'document'    => 'nullable|numeric',
-            'grade'       => 'required|string|max:50',
-            'guardian_id' => 'nullable|integer|exists:guardians,id'
-        ]);
+        try {
+            $request->validate([
+                'first_name'  => 'required|string|max:120',
+                'last_name'   => 'required|string|max:120',
+                'birth_date'  => 'nullable|date',
+                'document'    => 'nullable|numeric',
+                'grade'       => 'required|string|max:50',
+                'guardian_id' => 'nullable|integer|exists:guardians,id'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['message' => 'Errores de validación', 'errors' => $e->errors()], 422);
+        }
 
         DB::beginTransaction();
         try {
@@ -58,7 +63,7 @@ class StudentController extends Controller
             $email = $this->generateInstitutionalEmail($request->first_name, $request->last_name);
 
             // 2️⃣ Crear estudiante
-            Student::create([
+            $student = Student::create([
                 'first_name'         => $request->first_name,
                 'last_name'          => $request->last_name,
                 'birth_date'         => $request->birth_date,
@@ -69,11 +74,12 @@ class StudentController extends Controller
             ]);
 
             DB::commit();
-            return response()->json(['message' => 'Estudiante registrado correctamente'], 201);
+            return response()->json(['message' => 'Estudiante registrado correctamente', 'student' => $student], 201);
 
         } catch (\Throwable $e) {
             DB::rollBack();
-            return response()->json(['message' => $e->getMessage()], 400);
+            Log::error('Error al crear estudiante: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al guardar: ' . $e->getMessage()], 400);
         }
     }
 
