@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="mb-0">Actividades Escolares</h3>
-                    <a href="<?php echo e(route('school.activities.create')); ?>" class="btn btn-primary">
+                    <a href="<?php echo e(route('activities.create')); ?>" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Crear Nueva Actividad
                     </a>
                 </div>
@@ -61,10 +61,10 @@
                                     <td><?php echo e($activity->creator->first_name ?? ""); ?> <?php echo e($activity->creator->last_name ?? ""); ?></td>
                                     <td><?php echo e($activity->created_at->format("d/m/Y")); ?></td>
                                     <td>
-                                        <a href="<?php echo e(route('school.activities.edit', $activity->id)); ?>" class="btn btn-sm btn-warning" title="Editar">
+                                        <a href="<?php echo e(route('activities.edit', $activity->id)); ?>" class="btn btn-sm btn-warning" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="<?php echo e(route('school.activities.destroy', $activity->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
+                                        <form action="<?php echo e(route('activities.destroy', $activity->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
                                             <?php echo csrf_field(); ?>
                                             <?php echo method_field('DELETE'); ?>
                                             <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
@@ -83,7 +83,7 @@
                     </div>
                 <?php else: ?>
                     <div class="alert alert-info">
-                        No hay actividades registradas. <a href="<?php echo e(route('school.activities.create')); ?>">Crear una nueva</a>
+                        No hay actividades registradas. <a href="<?php echo e(route('activities.create')); ?>">Crear una nueva</a>
                     </div>
                 <?php endif; ?>
             </div>

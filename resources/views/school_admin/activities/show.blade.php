@@ -9,10 +9,10 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="mb-0">{{ $activity->title }}</h3>
                 <div>
-                    <a href="{{ route("school.activities.edit", $activity->id) }}" class="btn btn-warning btn-sm">
+                    <a href="{{ route("activities.edit", $activity->id) }}" class="btn btn-warning btn-sm">
                         <i class="fas fa-edit"></i> Editar
                     </a>
-                    <a href="{{ route("school.activities.index") }}" class="btn btn-secondary btn-sm">
+                    <a href="{{ route("activities.index") }}" class="btn btn-secondary btn-sm">
                         <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>

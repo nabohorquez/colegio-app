@@ -38,13 +38,13 @@
                                         <tr>
                                             <td>
                                             <div class="d-flex gap-1">
-                                                <a href="<?php echo e(route('school.topics.show', $topic)); ?>" class="btn btn-sm btn-info" title="Ver">
+                                                <a href="<?php echo e(route('topics.show', $topic)); ?>" class="btn btn-sm btn-info" title="Ver">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="<?php echo e(route('school.topics.edit', $topic)); ?>" class="btn btn-sm btn-warning" title="Editar">
+                                                <a href="<?php echo e(route('topics.edit', $topic)); ?>" class="btn btn-sm btn-warning" title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="<?php echo e(route('school.topics.destroy', $topic)); ?>" method="POST" class="d-inline">
+                                                <form action="<?php echo e(route('topics.destroy', $topic)); ?>" method="POST" class="d-inline">
                                                     <?php echo csrf_field(); ?>
                                                     <?php echo method_field('DELETE'); ?>
                                                     <button type="submit" class="btn btn-sm btn-danger" title="Eliminar" 
@@ -76,7 +76,7 @@
         </div>
     </div>
     <div>
-        <a href="<?php echo e(route('school.topics.create')); ?>" class="btn btn-primary position-fixed rounded-circle" style="bottom: 20px; right: 20px;" title="Adicionar tema">
+        <a href="<?php echo e(route('topics.create')); ?>" class="btn btn-primary position-fixed rounded-circle" style="bottom: 20px; right: 20px;" title="Adicionar tema">
             <i class="fas fa-plus h1 text-align-center m-0 my-1"></i>
         </a>
     </div>

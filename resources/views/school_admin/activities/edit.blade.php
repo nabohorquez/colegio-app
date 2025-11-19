@@ -10,7 +10,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('school.activities.update', $activity->id) }}" method="POST">
+                    <form action="{{ route('activities.update', $activity->id) }}" method="POST">
                         @method('PUT')
                         @include('school_admin.activities._form', ['activity' => $activity])
                     </form>

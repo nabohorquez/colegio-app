@@ -11,10 +11,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h3 class="card-title m-0">{{ $topic->title }}</h3>
                             <div>
-                                <a href="{{ route('school.topics.edit', $topic) }}" class="btn btn-sm btn-warning">
+                                <a href="{{ route('topics.edit', $topic) }}" class="btn btn-sm btn-warning">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>
-                                <a href="{{ route('school.topics.index') }}" class="btn btn-sm btn-secondary">
+                                <a href="{{ route('topics.index') }}" class="btn btn-sm btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Volver
                                 </a>
                             </div>
