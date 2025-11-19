@@ -20,12 +20,15 @@ class DatabaseSeeder extends Seeder
         $this->call(RolePage::class);
         $this->call(PermissionSuperAdmin::class);
         $this->call(ModulePage::class);
-        $this->call(PagePage::class);
+        
         // Crear módulos/páginas del área de administración del colegio antes de insertar datos que los consumen
         $this->call(SchoolAdminPageSeeder::class);
+        $this->call(PagesPageSeeder::class);
+        $this->call(GradesPageSeeder::class);
+        $this->call(EnrollmentTypePageSeeder::class);
+        $this->call(EnrollmentPageSeeder::class);
         $this->call(TopicsPageSeeder::class);
         $this->call(ActivitiesPageSeeder::class);
-        $this->call(GradesPageSeeder::class);
 
         $this->call(EmployeesModuleSeeder::class);
         $this->call(GuardiansModuleSeeder::class);
@@ -36,11 +39,19 @@ class DatabaseSeeder extends Seeder
 
         // Seeders para datos de ejemplo
         $this->call(SampleStudentsSeeder::class);
-        $this->call(SampleGradesSeeder::class);
         $this->call(EnrollmentTypeSeeder::class);
         $this->call(GradeSeeder::class);
         $this->call(SubjectSeeder::class);
+        
+        // Seeders que dependen de SubjectSeeder
+        $this->call(SampleActivitiesSeeder::class);
+        $this->call(SampleContentsSeeder::class);
+        
+        // $this->call(SampleGradesSeeder::class); // Desactivado: estructura incompatible con tabla grades
         $this->call(EnrollmentSeeder::class);
+        
+        // Reorganizar la estructura de páginas según el diagrama requerido
+        $this->call(ReorganizePagesStructure::class);
     }
     
 }

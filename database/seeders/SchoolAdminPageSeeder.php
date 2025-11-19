@@ -13,16 +13,23 @@ class SchoolAdminPageSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear la página padre "Administración del Colegio"
-        $schoolAdminPage = Page::firstOrCreate(
-            ['page_name' => 'Administración del Colegio'],
-            [
-                'route' => 'school.admin',
-                'id_page_type' => 1,
-                'description' => 'Página principal de administración del colegio',
-                'id_father_page' => null,
-            ]
-        );
+        // Obtener la página padre "Administración de Colegio" que ya fue creada por la migración
+        // También intentar encontrar variaciones del nombre
+        $schoolAdminPage = Page::where('route', 'school.admin')
+            ->where('id_father_page', null)
+            ->first();
+        
+        // Si no existe, crearla
+        if (!$schoolAdminPage) {
+            $schoolAdminPage = Page::firstOrCreate(
+                ['route' => 'school.admin', 'id_father_page' => null],
+                [
+                    'page_name' => 'Administración de Colegio',
+                    'id_page_type' => 1,
+                    'description' => 'Página principal de administración del colegio',
+                ]
+            );
+        }
 
         // Asignar permisos a SuperAdministrador
         $superAdminRole = Role::where('rol_name', 'SuperAdministrador')->first();

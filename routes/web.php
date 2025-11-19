@@ -142,44 +142,44 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::delete('/{id}', [EnrollmentController::class, 'delete'])->name('delete');
     });
 
+    // Rutas de actividades (hijo de Administración de Colegio)
+    Route::prefix('activities')->name('activities.')->group(function () {
+        Route::get('/', [ActivityController::class, 'index'])->name('index');
+        Route::get('/create', [ActivityController::class, 'create'])->name('create');
+        Route::post('/', [ActivityController::class, 'store'])->name('store');
+        Route::get('/{activity}', [ActivityController::class, 'show'])->name('show');
+        Route::get('/{activity}/edit', [ActivityController::class, 'edit'])->name('edit');
+        Route::put('/{activity}', [ActivityController::class, 'update'])->name('update');
+        Route::delete('/{activity}', [ActivityController::class, 'destroy'])->name('destroy');
+    });
+
+    // Rutas de contenidos/topics (hijo de Administración de Colegio)
+    Route::prefix('topics')->name('topics.')->group(function () {
+        Route::get('/', [TopicsController::class, 'index'])->name('index');
+        Route::get('/create', [TopicsController::class, 'create'])->name('create');
+        Route::post('/', [TopicsController::class, 'store'])->name('store');
+        Route::get('/{topic}', [TopicsController::class, 'show'])->name('show');
+        Route::get('/{topic}/edit', [TopicsController::class, 'edit'])->name('edit');
+        Route::put('/{topic}', [TopicsController::class, 'update'])->name('update');
+        Route::delete('/{topic}', [TopicsController::class, 'destroy'])->name('destroy');
+    });
+
+    // Rutas de calificaciones/notas del estudiante (hijo de Administración de Colegio)
+    Route::prefix('student-grades')->name('student-grades.')->group(function () {
+        Route::get('/', [GradeController::class, 'index'])->name('index');
+        Route::get('/create', [GradeController::class, 'create'])->name('create');
+        Route::post('/', [GradeController::class, 'store'])->name('store');
+        Route::get('/student/{student}', [GradeController::class, 'studentGrades'])->name('student');
+        Route::get('/{grade}', [GradeController::class, 'show'])->name('show');
+        Route::get('/{grade}/edit', [GradeController::class, 'edit'])->name('edit');
+        Route::put('/{grade}', [GradeController::class, 'update'])->name('update');
+        Route::delete('/{grade}', [GradeController::class, 'destroy'])->name('destroy');
+    });
+
     // Rutas de administración de colegio
     Route::prefix('school')->name('school.')->group(function () {
         Route::get('/admin', function () {
             return view('school_admin.index');
         })->name('admin');
-
-        // Rutas de topics dentro de administración del colegio
-        Route::prefix('admin/topics')->name('topics.')->group(function () {
-            Route::get('/', [TopicsController::class, 'index'])->name('index');
-            Route::get('/create', [TopicsController::class, 'create'])->name('create');
-            Route::post('/', [TopicsController::class, 'store'])->name('store');
-            Route::get('/{topic}', [TopicsController::class, 'show'])->name('show');
-            Route::get('/{topic}/edit', [TopicsController::class, 'edit'])->name('edit');
-            Route::put('/{topic}', [TopicsController::class, 'update'])->name('update');
-            Route::delete('/{topic}', [TopicsController::class, 'destroy'])->name('destroy');
-        });
-
-        // Rutas de activities dentro de administración del colegio
-        Route::prefix('admin/activities')->name('activities.')->group(function () {
-            Route::get('/', [ActivityController::class, 'index'])->name('index');
-            Route::get('/create', [ActivityController::class, 'create'])->name('create');
-            Route::post('/', [ActivityController::class, 'store'])->name('store');
-            Route::get('/{activity}', [ActivityController::class, 'show'])->name('show');
-            Route::get('/{activity}/edit', [ActivityController::class, 'edit'])->name('edit');
-            Route::put('/{activity}', [ActivityController::class, 'update'])->name('update');
-            Route::delete('/{activity}', [ActivityController::class, 'destroy'])->name('destroy');
-        });
-
-        // Rutas de grades dentro de administración del colegio
-        Route::prefix('admin/grades')->name('grades.')->group(function () {
-            Route::get('/', [GradeController::class, 'index'])->name('index');
-            Route::get('/create', [GradeController::class, 'create'])->name('create');
-            Route::post('/', [GradeController::class, 'store'])->name('store');
-            Route::get('/student/{student}', [GradeController::class, 'studentGrades'])->name('student');
-            Route::get('/{grade}', [GradeController::class, 'show'])->name('show');
-            Route::get('/{grade}/edit', [GradeController::class, 'edit'])->name('edit');
-            Route::put('/{grade}', [GradeController::class, 'update'])->name('update');
-            Route::delete('/{grade}', [GradeController::class, 'destroy'])->name('destroy');
-        });
     });
 });
