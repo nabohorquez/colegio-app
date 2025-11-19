@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('school.topics.update', $topic) }}" method="POST">
+                        <form action="{{ route('topics.update', $topic) }}" method="POST">
                             @csrf
                             @method('PUT')
 
@@ -35,7 +35,7 @@
                             </div>
 
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="{{ route('school.topics.index') }}" class="btn btn-secondary">Cancelar</a>
+                                <a href="{{ route('topics.index') }}" class="btn btn-secondary">Cancelar</a>
                                 <button type="submit" class="btn btn-primary">Actualizar Tema</button>
                             </div>
                         </form>

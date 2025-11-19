@@ -1,6 +1,6 @@
 @extends('layouts.app-menu')
 
-@section('title', 'Modules - AcademicSoftware')
+@section('title', 'Módulos - AcademicSoftware')
 
 @section('content-principal')
     <div class="container mt-5">
@@ -24,7 +24,7 @@
                 @method('PUT')
             @endif
             <div class="mb-3">
-                <label for="module_name" class="form-label">Nombre del modulo</label>
+                <label for="module_name" class="form-label">Nombre del Módulo</label>
                 <input type="text" class="form-control" id="module_name" name="module_name"
                     value="{{ $module->page_name ?? '' }}" required
                 >

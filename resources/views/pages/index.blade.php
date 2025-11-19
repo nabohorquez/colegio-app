@@ -1,6 +1,6 @@
 @extends('layouts.app-menu')
 
-@section('title', 'Paginas - AcademicSoftware')
+@section('title', 'Páginas - AcademicSoftware')
 
 @section('content-principal')
     <div class="container mt-5">

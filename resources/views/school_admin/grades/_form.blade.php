@@ -105,7 +105,7 @@
     <button type="submit" class="btn btn-primary">
         <i class="fas fa-save"></i> Guardar Calificación
     </button>
-    <a href="{{ route('school.grades.index') }}" class="btn btn-secondary">
+    <a href="{{ route('student-grades.index') }}" class="btn btn-secondary">
         <i class="fas fa-times"></i> Cancelar
     </a>
 </div>

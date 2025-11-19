@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('school.topics.store') }}" method="POST">
+                        <form action="{{ route('topics.store') }}" method="POST">
                             @csrf
 
                             <div class="mb-3">
@@ -34,7 +34,7 @@
                             </div>
 
                             <div class="d-flex justify-content-end gap-2">
-                                <a href="{{ route('school.topics.index') }}" class="btn btn-secondary">Cancelar</a>
+                                <a href="{{ route('topics.index') }}" class="btn btn-secondary">Cancelar</a>
                                 <button type="submit" class="btn btn-primary">Guardar Tema</button>
                             </div>
                         </form>

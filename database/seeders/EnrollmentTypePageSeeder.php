@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Page;
 use App\Models\Role;
 
-class GradesPageSeeder extends Seeder
+class EnrollmentTypePageSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,18 +21,18 @@ class GradesPageSeeder extends Seeder
             ->first();
         
         if ($fatherPage) {
-            // Create or get the 'Calificaciones' page under the school admin father page
+            // Create or get the 'Tipos de Matrícula' page under the school admin father page
             $pageCreated = $pageModel::firstOrCreate(
-                ['route' => 'school.grades.index'],
+                ['route' => 'enrollment-types.index'],
                 [
-                    'page_name' => 'Calificaciones',
+                    'page_name' => 'Tipos de Matrícula',
                     'id_page_type' => 2,
-                    'description' => 'Gestión de calificaciones de estudiantes',
+                    'description' => 'Gestión de tipos de matrícula del colegio',
                     'id_father_page' => $fatherPage->id,
                 ]
             );
 
-            $superAdminRole = \App\Models\Role::where('rol_name', 'SuperAdministrador')->first();
+            $superAdminRole = Role::where('rol_name', 'SuperAdministrador')->first();
             $firstUser = \App\Models\User::first();
 
             if ($superAdminRole && $firstUser) {

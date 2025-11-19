@@ -10,7 +10,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('school.activities.store') }}" method="POST">
+                    <form action="{{ route('activities.store') }}" method="POST">
                         @include('school_admin.activities._form')
                     </form>
                 </div>

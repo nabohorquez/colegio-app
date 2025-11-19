@@ -63,7 +63,7 @@
     <button type="submit" class="btn btn-primary">
         <i class="fas fa-save"></i> Guardar Actividad
     </button>
-    <a href="{{ route('school.activities.index') }}" class="btn btn-secondary">
+    <a href="{{ route('activities.index') }}" class="btn btn-secondary">
         <i class="fas fa-times"></i> Cancelar
     </a>
 </div>

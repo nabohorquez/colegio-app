@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="mb-0">Actividades Escolares</h3>
-                    <a href="{{ route('school.activities.create') }}" class="btn btn-primary">
+                    <a href="{{ route('activities.create') }}" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Crear Nueva Actividad
                     </a>
                 </div>
@@ -60,10 +60,10 @@
                                     <td>{{ $activity->creator->first_name ?? "" }} {{ $activity->creator->last_name ?? "" }}</td>
                                     <td>{{ $activity->created_at->format("d/m/Y") }}</td>
                                     <td>
-                                        <a href="{{ route('school.activities.edit', $activity->id) }}" class="btn btn-sm btn-warning" title="Editar">
+                                        <a href="{{ route('activities.edit', $activity->id) }}" class="btn btn-sm btn-warning" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('school.activities.destroy', $activity->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
+                                        <form action="{{ route('activities.destroy', $activity->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
@@ -81,7 +81,7 @@
                     </div>
                 @else
                     <div class="alert alert-info">
-                        No hay actividades registradas. <a href="{{ route('school.activities.create') }}">Crear una nueva</a>
+                        No hay actividades registradas. <a href="{{ route('activities.create') }}">Crear una nueva</a>
                     </div>
                 @endif
             </div>
