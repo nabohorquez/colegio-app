@@ -16,6 +16,16 @@ class RoleByUser extends Model
     protected $table = 'roles_by_users';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'id_role',
+        'id_user',
+    ];
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>

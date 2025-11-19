@@ -17,7 +17,9 @@ class Enrollment extends Model
         'tipo_matricula_id',
         'forma_pago',
         'fecha',
-        'estado'
+        'estado',
+        'costo',
+        'estado_pago'
     ];
 
     protected $casts = [

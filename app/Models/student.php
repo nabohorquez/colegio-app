@@ -17,7 +17,9 @@ class Student extends Model
         'document',
         'grade',
         'guardian_id',
-        'institutional_email'
+        'institutional_email',
+        'email_institutional',
+        'address'
     ];
 
     /**
