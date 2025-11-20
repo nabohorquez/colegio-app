@@ -87,7 +87,7 @@
                                     <i class="fas fa-folder"></i>
                                     <span><?php echo e($module->page_name); ?></span>
                                 </a>
-                                <div class="collapse" id="module-<?php echo e($module->id); ?>">
+                                <div class="collapse ms-3" id="module-<?php echo e($module->id); ?>">
                                     <?php $__currentLoopData = $module->sub_pages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sub_page): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <?php $subRoute = $sub_page->route ?? ''; ?>
                                         <?php if(empty($sub_page->components)): ?>

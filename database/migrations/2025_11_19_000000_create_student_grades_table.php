@@ -14,13 +14,13 @@ return new class extends Migration
         if (!Schema::hasTable('student_grades')) {
             Schema::create('student_grades', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('student_id');
+                $table->integer('student_id');
                 $table->unsignedBigInteger('subject_id');
                 $table->decimal('partial_1', 3, 1)->nullable()->comment('Nota del primer parcial (0-5)');
                 $table->decimal('partial_2', 3, 1)->nullable()->comment('Nota del segundo parcial (0-5)');
                 $table->decimal('final_grade', 3, 1)->nullable()->comment('Nota final (0-5)');
                 $table->text('observations')->nullable()->comment('Observaciones del docente');
-                $table->unsignedBigInteger('created_by')->comment('Usuario que creó la calificación');
+                $table->integer('created_by')->comment('Usuario que creó la calificación');
                 $table->timestamps();
                 $table->softDeletes();
 
