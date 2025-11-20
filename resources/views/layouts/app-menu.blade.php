@@ -86,7 +86,7 @@
                                     <i class="fas fa-folder"></i>
                                     <span>{{ $module->page_name }}</span>
                                 </a>
-                                <div class="collapse" id="module-{{ $module->id }}">
+                                <div class="collapse ms-3" id="module-{{ $module->id }}">
                                     @foreach($module->sub_pages as $sub_page)
                                         @php $subRoute = $sub_page->route ?? ''; @endphp
                                         @if(empty($sub_page->components))
