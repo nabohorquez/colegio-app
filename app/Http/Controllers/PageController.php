@@ -166,11 +166,14 @@ class PageController extends Controller
     {
         $page = $this->getPageById($id);
 
-        RoleByPage::where('id_page', $page->id)->delete();
+        // Eliminar primero las relaciones de roles por página
+        $page->roleByPage()->delete();
 
+        // Luego eliminar la página
         $page->delete();
+        
         return redirect()->route('pages.index')
-            ->with('success', 'Modulo eliminado.');
+            ->with('success', 'Página eliminada correctamente.');
     }
 
     private function validatePageData(string $pageName, ?int $id = null): bool

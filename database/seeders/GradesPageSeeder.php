@@ -23,7 +23,7 @@ class GradesPageSeeder extends Seeder
         if ($fatherPage) {
             // Create or get the 'Calificaciones' page under the school admin father page
             $pageCreated = $pageModel::firstOrCreate(
-                ['route' => 'school.grades.index'],
+                ['route' => 'student-grades.index'],
                 [
                     'page_name' => 'Calificaciones',
                     'id_page_type' => 2,
