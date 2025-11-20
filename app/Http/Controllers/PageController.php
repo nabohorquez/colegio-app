@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use App\Models\RoleByPage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -164,6 +165,8 @@ class PageController extends Controller
     public function delete($id)
     {
         $page = $this->getPageById($id);
+
+        RoleByPage::where('id_page', $page->id)->delete();
 
         $page->delete();
         return redirect()->route('pages.index')
