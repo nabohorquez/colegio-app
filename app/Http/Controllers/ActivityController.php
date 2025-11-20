@@ -54,7 +54,7 @@ class ActivityController extends Controller
             "created_by" => Auth::id(),
         ]);
 
-        return redirect()->route("school.activities.index")
+        return redirect()->route("activities.index")
             ->with("success", "Actividad creada exitosamente.");
     }
 
@@ -93,7 +93,7 @@ class ActivityController extends Controller
 
         $activity->update($request->all());
 
-        return redirect()->route("school.activities.index")
+        return redirect()->route("activities.index")
             ->with("success", "Actividad actualizada exitosamente");
     }
 
@@ -104,7 +104,7 @@ class ActivityController extends Controller
     {
         $activity->delete();
 
-        return redirect()->route("school.activities.index")
+        return redirect()->route("activities.index")
             ->with("success", "Actividad eliminada exitosamente");
     }
 }
