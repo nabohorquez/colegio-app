@@ -181,4 +181,13 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
             return view('school_admin.index');
         })->name('admin');
     });
+
+    // Rutas de reportes
+    Route::prefix('reports')->name('reports.')->group(function () {
+        // Reportes de calificaciones
+        Route::prefix('grades')->name('grades.')->group(function () {
+            Route::get('/detailed', [ReportController::class, 'detailedGrades'])->name('detailed');
+            Route::get('/consolidated', [ReportController::class, 'consolidatedGrades'])->name('consolidated');
+        });
+    });
 });

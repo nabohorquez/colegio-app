@@ -44,4 +44,13 @@ class Subject extends Model
     {
         return $this->belongsToMany(Grade::class, 'grade_subject', 'materia_id', 'grado_id');
     }
+
+    /**
+     * Relación: Una materia tiene muchas calificaciones de estudiantes
+     */
+    public function studentGrades()
+    {
+        return $this->hasMany(StudentGrade::class, 'subject_id', 'id');
+    }
 }
+
