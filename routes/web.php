@@ -10,8 +10,8 @@ use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentGradesController;
 use App\Http\Controllers\SubjectController;
@@ -163,16 +163,16 @@ Route::middleware(['auth', 'check.page.permissions'])->group(function () {
         Route::delete('/{topic}', [TopicsController::class, 'destroy'])->name('destroy');
     });
 
-        // Rutas de contenidos (hijo de Administración de Colegio)
-        Route::prefix('contents')->name('contents.')->group(function () {
-            Route::get('/', [App\Http\Controllers\ContentController::class, 'index'])->name('index');
-            Route::get('/create', [App\Http\Controllers\ContentController::class, 'create'])->name('create');
-            Route::post('/', [App\Http\Controllers\ContentController::class, 'store'])->name('store');
-            Route::get('/{content}', [App\Http\Controllers\ContentController::class, 'show'])->name('show');
-            Route::get('/{content}/edit', [App\Http\Controllers\ContentController::class, 'edit'])->name('edit');
-            Route::put('/{content}', [App\Http\Controllers\ContentController::class, 'update'])->name('update');
-            Route::delete('/{content}', [App\Http\Controllers\ContentController::class, 'destroy'])->name('destroy');
-        });
+    // Rutas de contenidos (hijo de Administración de Colegio)
+    Route::prefix('contents')->name('contents.')->group(function () {
+        Route::get('/', [App\Http\Controllers\ContentController::class, 'index'])->name('index');
+        Route::get('/create', [App\Http\Controllers\ContentController::class, 'create'])->name('create');
+        Route::post('/', [App\Http\Controllers\ContentController::class, 'store'])->name('store');
+        Route::get('/{content}', [App\Http\Controllers\ContentController::class, 'show'])->name('show');
+        Route::get('/{content}/edit', [App\Http\Controllers\ContentController::class, 'edit'])->name('edit');
+        Route::put('/{content}', [App\Http\Controllers\ContentController::class, 'update'])->name('update');
+        Route::delete('/{content}', [App\Http\Controllers\ContentController::class, 'destroy'])->name('destroy');
+    });
 
     // Rutas de calificaciones/notas del estudiante (hijo de Administración de Colegio)
     Route::prefix('student-grades')->name('student-grades.')->group(function () {
