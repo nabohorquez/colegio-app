@@ -55,12 +55,14 @@ class PageController extends Controller
 
     public function getAll()
     {
-        return view('pages.index', [
-            'pagesTable' => Page::join('pages as father', 'father.id', 'pages.id_father_page')
+
+        $pages = Page::join('pages as father', 'father.id', 'pages.id_father_page')
                 ->select(['pages.*', 'father.page_name as module_name'])
                 ->where('pages.id_page_type', 2)
-                ->orderBy('pages.page_name')
-                ->get()
+                ->orderBy('pages.page_name');
+
+        return view('pages.index', [
+            'pagesTable' => $pages->get()
         ]);
     }
 
